@@ -15,7 +15,11 @@ class Property:
 
     def event(self, player):
         if self.owner:
-            player.pay(self.owner)
+            if player != self.owner:
+                player.pay(self.rent[self.houses], self.owner)
+        else:
+            # buy or auction
+
 
     def take_mortgage(self):
         if self.owner and not self.mortgaged:
@@ -36,3 +40,4 @@ class Property:
         if self.owner and self.houses > 0:
             self.owner.earn(self.house_price / 2)
             self.houses -= 1
+
