@@ -19,6 +19,7 @@ class Property:
                 player.pay(self.rent[self.houses], self.owner)
         else:
             # buy or auction
+            pass
 
 
     def take_mortgage(self):

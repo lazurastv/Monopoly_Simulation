@@ -1,9 +1,9 @@
 class Player:
     id = 0
 
-    def __init__(self, money, position):
-        self.money = money
-        self.position = position
+    def __init__(self):
+        self.money = 0
+        self.position = 0
         self.id = Player.id
         Player.id += 1
 
