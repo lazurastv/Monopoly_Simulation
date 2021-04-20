@@ -21,7 +21,6 @@ class Property:
             # buy or auction
             pass
 
-
     def take_mortgage(self):
         if self.owner and not self.mortgaged:
             self.owner.earn(self.mortgage)
@@ -42,3 +41,5 @@ class Property:
             self.owner.earn(self.house_price / 2)
             self.houses -= 1
 
+    def __str__(self):
+        return self.name + str(self.id) + str(self.houses) + str(self.owner) + str(self.mortgaged)
