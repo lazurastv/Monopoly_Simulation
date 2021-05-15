@@ -8,7 +8,7 @@ class Player:
         self.id = Player.id
         Player.id += 1
 
-    def add_properties(self, property_ids):
+    def add_property(self, property_ids):
         for property_id in property_ids:
             self.properties.append(property_id)
 
@@ -25,6 +25,9 @@ class Player:
     def earn(self, amount):
         amount //= 1
         self.money += amount
+
+    def has(self, amount):
+        return self.money >= amount
 
     def move_to(self, to):
         self.position = to

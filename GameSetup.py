@@ -1,6 +1,6 @@
 from Player import Player
 from utilities import shuffle
-from utilities import type_input
+from utilities import force_type_input
 
 
 class GameSetup:
@@ -13,11 +13,11 @@ class GameSetup:
 
     def ask_for_player_count(self):
         print("Input player count: ", end="")
-        self.add_players(type_input(int))
+        self.add_players(force_type_input(int))
 
     def ask_for_starting_money(self):
         print("Input starting money: ", end="")
-        self.starting_money = type_input(int)
+        self.starting_money = force_type_input(int)
 
     def add_player(self):
         self.players.append(Player())
