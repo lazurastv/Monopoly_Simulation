@@ -3,7 +3,6 @@ from abc import abstractmethod
 
 
 class Property(Tile):
-
     def __init__(self, name, index, price, mortgage, group):
         super().__init__(name, index)
         self.price = price

@@ -5,6 +5,7 @@ class Player:
         self.money = 0
         self.position = 0
         self.properties = []
+        self.jail_card = False
         self.id = Player.id
         Player.id += 1
 
@@ -28,6 +29,15 @@ class Player:
 
     def has(self, amount):
         return self.money >= amount
+
+    def get_jail_card(self):
+        self.jail_card = True
+
+    def has_jail_card(self):
+        return self.jail_card
+
+    def use_jail_card(self):
+        self.jail_card = False
 
     def move_to(self, to):
         self.position = to
