@@ -3,7 +3,7 @@ from Tiles.Tile import Tile
 
 class Jail(Tile):
     def __init__(self):
-        super().__init__("Jail", 10)
+        super().__init__("Jail")
         self.jailed_players = []
 
     def event(self, player):

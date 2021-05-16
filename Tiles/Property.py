@@ -3,13 +3,14 @@ from abc import abstractmethod
 
 
 class Property(Tile):
-    def __init__(self, name, index, price, mortgage, group):
-        super().__init__(name, index)
+
+    def __init__(self, name, price, mortgage, group, mortgaged=False, owner=None):
+        super().__init__(name)
         self.price = price
         self.mortgage = mortgage
         self.group = group
-        self.mortgaged = False
-        self.owner = None
+        self.mortgaged = mortgaged
+        self.owner = owner
 
     def event(self, player):
         if self.owner:

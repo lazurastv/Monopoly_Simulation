@@ -1,21 +1,19 @@
 class Player:
     id = 0
 
-    def __init__(self):
-        self.money = 0
-        self.position = 0
-        self.properties = []
-        self.jail_card = False
+    def __init__(self, money, position, properties, card=False):
+        self.money = money
+        self.position = position
+        self.properties = properties
+        self.jail_card = card
         self.id = Player.id
         Player.id += 1
 
-    def add_property(self, property_ids):
-        for property_id in property_ids:
-            self.properties.append(property_id)
+    def add_property(self, tile):
+        self.properties.append(tile)
 
-    def remove_properties(self, property_ids):
-        for property_id in property_ids:
-            self.properties.remove(property_id)
+    def remove_property(self, tile):
+        self.properties.remove(tile)
 
     def pay(self, amount, player=None):
         amount //= 1
@@ -44,6 +42,3 @@ class Player:
 
     def move(self, amount):
         self.position += amount
-
-    def __str__(self):
-        return "Player " + str(self.id) + ": $" + str(self.money) + ", " + str(self.properties)

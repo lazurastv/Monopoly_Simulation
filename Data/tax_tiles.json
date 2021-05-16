@@ -1,0 +1,18 @@
+{
+  "tiles": [
+    {
+      "index": 4,
+      "args": {
+        "name": "Income Tax",
+        "cost": 200
+      }
+    },
+    {
+      "index": 38,
+      "args": {
+        "name": "Luxury Tax",
+        "cost": 100
+      }
+    }
+  ]
+}
