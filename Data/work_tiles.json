@@ -3,17 +3,13 @@
     {
       "index": 12,
       "args": {
-        "name": "Electric Company",
-        "price": 150,
-        "mortgage": 75
+        "name": "Electric Company"
       }
     },
     {
       "index": 28,
       "args": {
-        "name": "Water Works",
-        "price": 150,
-        "mortgage": 75
+        "name": "Water Works"
       }
     }
   ]

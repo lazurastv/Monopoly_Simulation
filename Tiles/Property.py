@@ -1,5 +1,4 @@
 from Tile import Tile
-from abc import abstractmethod
 
 
 class Property(Tile):
@@ -12,16 +11,15 @@ class Property(Tile):
         self.mortgaged = mortgaged
         self.owner = owner
 
-    def event(self, player):
+    def landed_on_event(self, player, dice):
         if self.owner:
             if player != self.owner:
-                player.pay(self.rent(), self.owner)
+                player.pay(self.rent(dice), self.owner)
         else:
             # buy or auction
             pass
 
-    @abstractmethod
-    def rent(self):
+    def rent(self, dice):
         pass
 
     def buy(self, player, price=None):

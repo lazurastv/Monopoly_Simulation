@@ -6,7 +6,7 @@ class Tax(Tile):
         super().__init__(name)
         self.cost = cost
 
-    def event(self, player):
+    def landed_on_event(self, player, dice):
         player.pay(self.cost)
 
     def __str__(self):

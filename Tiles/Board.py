@@ -1,6 +1,7 @@
 import json
 
 from Player import Player
+from Tiles.Train import Train
 from Tiles.Works import Works
 from Tiles.Hotel import Hotel
 from Tiles.Tax import Tax
@@ -9,7 +10,8 @@ from Tiles.Tile import Tile
 
 class Board:
     def __init__(self, *, player_count=4, starting_money=1500, players=None):
-        self.tiles = {}
+        self.tiles = list(range(40))
+        self.tile_mapping = {}
         self.load_tiles()
         if players:
             self.players = players
@@ -21,22 +23,27 @@ class Board:
         if player_count > 0:
             for i in range(player_count):
                 self.players.append(Player(starting_money, 0, [], False))
-        else:
-            pass
 
     def load_tiles(self):
-        self.load(Tile, "empty_tiles")
-        self.load(Tax, "tax_tiles")
-        self.load(Works, "work_tiles")
+        self.load(Tile, "empty")
+        self.load(Tax, "tax")
+        self.load(Works, "work")
+        self.load(Train, "train")
 
     def load(self, tile_type, file):
-        with open("../Data/" + file + ".json") as data_file:
+        with open("../Data/" + file + "_tiles.json") as data_file:
             data = json.load(data_file)
             for p in data["tiles"]:
-                if p["index"] in self.tiles.keys():
-                    print("Warning! Same key for", self.tiles[p["index"]].name, "and", p["args"]["name"])
-                self.tiles[p["index"]] = tile_type(**p["args"])
+                index = p["index"]
+                tile = tile_type(**p["args"])
+                self.tiles[index] = tile
+                self.tile_mapping[tile.name] = index
+
+    def get_index(self, index):
+        return self.tiles[index]
+
+    def index_of(self, name):
+        return self.tile_mapping[name]
 
 
 board = Board(player_count=4, starting_money=1500)
-print(sorted(board.tiles.keys()))

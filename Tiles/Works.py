@@ -2,13 +2,8 @@ from Tiles.Property import Property
 
 
 class Works(Property):
-    def __init__(self, name, price, mortgage, group=None):
-        super().__init__(name, price, mortgage, group)
+    def __init__(self, name, group=None):
+        super().__init__(name, 150, 75, group)
 
-    def event(self, player):
-        if self.owner:
-            if player != self.owner:
-                player.pay(self.rent(), self.owner)
-
-    def rent(self):
-        pass
+    def rent(self, dice):
+        return dice * 4  # 10 if both
