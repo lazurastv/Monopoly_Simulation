@@ -1,15 +1,14 @@
-from Player import Player
 from Tiles.Property import Property
 
 
 class Hotel(Property):
-    def __init__(self, name, price, mortgage, house_price, rents):
-        super().__init__(name, price, mortgage)
+    def __init__(self, name, price, mortgage, house_price, rents, board):
+        super().__init__(name, price, mortgage, board)
         self.house_price = house_price
         self.rents = rents
         self.houses = 0
 
-    def rent(self):
+    def rent(self, dice):
         pass
 
     def buy_house(self):

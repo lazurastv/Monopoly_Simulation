@@ -3,6 +3,9 @@ class Tile:
         self.name = name
         self.board = board
 
+    def __str__(self):
+        return self.name
+
     def starting_from_event(self, player, dice):
         start = player.position
         player.move(dice.value)

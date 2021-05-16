@@ -42,3 +42,4 @@ class Player:
 
     def move(self, amount):
         self.position += amount
+        self.position %= 40

@@ -25,8 +25,8 @@ class Jail(Tile):
         self.jailed_players.pop(player)
 
     def buy_out(self, player):
-        if player.has(100):
-            player.pay(100)
+        if player.has(50):
+            player.pay(50)
             self.remove_from_jail(player)
 
     def use_jail_card(self, player):

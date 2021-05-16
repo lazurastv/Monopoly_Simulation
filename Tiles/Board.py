@@ -29,13 +29,14 @@ class Board:
         self.load(Tax, "tax")
         self.load(Works, "work")
         self.load(Train, "train")
+        self.load(Hotel, "hotel")
 
     def load(self, tile_type, file):
         with open("../Data/" + file + "_tiles.json") as data_file:
             data = json.load(data_file)
             for p in data["tiles"]:
                 index = p["index"]
-                tile = tile_type(**p["args"])
+                tile = tile_type(**p["args"], board=self)
                 self.tiles[index] = tile
                 self.tile_mapping[tile.name] = index
 
@@ -47,3 +48,5 @@ class Board:
 
 
 board = Board(player_count=4, starting_money=1500)
+for tile in board.tiles:
+    print(tile)
