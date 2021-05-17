@@ -3,24 +3,30 @@ from Tile import Tile
 
 class Property(Tile):
 
-    def __init__(self, name, price, mortgage, board, group=None, mortgaged=False, owner=None):
-        super().__init__(name, board)
+    def __init__(self, name, price, mortgage, group=None, mortgaged=False, owner=None):
+        super().__init__(name)
         self.price = price
         self.mortgage = mortgage
         self.group = group
         self.mortgaged = mortgaged
         self.owner = owner
 
+    def __str__(self):
+        return self.name + ": $" + str(self.price) + " => $" + str(self.mortgage) + str(self.owner)
+
     def landed_on_event(self, player, dice):
         if self.owner:
             if player != self.owner:
                 player.pay(self.rent(dice), self.owner)
+            return True
         else:
-            # buy or auction
-            pass
+            return False
 
     def rent(self, dice):
-        pass
+        return 0
+
+    def set_group(self, group):
+        self.group = group
 
     def buy(self, player, price=None):
         if not price:
@@ -29,6 +35,9 @@ class Property(Tile):
             player.pay(price)
             self.owner = player
             player.add_property(self)
+
+    def owns(self, player):
+        return self.owner == player
 
     def take_mortgage(self):
         if self.owner and not self.mortgaged:

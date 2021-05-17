@@ -1,7 +1,6 @@
 class Tile:
-    def __init__(self, name, board):
+    def __init__(self, name):
         self.name = name
-        self.board = board
 
     def __str__(self):
         return self.name

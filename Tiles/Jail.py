@@ -3,6 +3,9 @@ from Tiles.Tile import Tile
 
 
 class Jail(Tile):
+    fee = 50
+    index = 10
+
     def __init__(self):
         super().__init__("Jail")
         self.jailed_players = {}
@@ -18,15 +21,15 @@ class Jail(Tile):
         player.move(dice.value)
 
     def put_in_jail(self, player):
-        player.move_to(self.board.index_of("Jail"))
+        player.move_to(self.index)
         self.jailed_players[player] = 0
 
     def remove_from_jail(self, player):
         self.jailed_players.pop(player)
 
     def buy_out(self, player):
-        if player.has(50):
-            player.pay(50)
+        if player.has(Jail.fee):
+            player.pay(Jail.fee)
             self.remove_from_jail(player)
 
     def use_jail_card(self, player):
