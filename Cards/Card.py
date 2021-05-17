@@ -1,3 +1,3 @@
 class Card:
-    def event(self, players, board):
+    def action(self, players):
         pass

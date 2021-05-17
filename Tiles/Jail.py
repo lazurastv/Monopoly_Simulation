@@ -4,10 +4,10 @@ from Tiles.Tile import Tile
 
 class Jail(Tile):
     fee = 50
-    index = 10
 
-    def __init__(self):
+    def __init__(self, index):
         super().__init__("Jail")
+        self.index = index
         self.jailed_players = {}
 
     def __contains__(self, player):

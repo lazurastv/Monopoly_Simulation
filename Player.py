@@ -9,6 +9,9 @@ class Player:
         self.id = Player.id
         Player.id += 1
 
+    def __str__(self):
+        return str(self.id) + ": $" + str(self.money) + ", at " + str(self.position)
+
     def add_property(self, tile):
         self.properties.append(tile)
 

@@ -12,7 +12,7 @@ class Property(Tile):
         self.owner = owner
 
     def __str__(self):
-        return self.name + ": $" + str(self.price) + " => $" + str(self.mortgage) + str(self.owner)
+        return str(super()) + ": $" + str(self.price) + " => $" + str(self.owner) + " " + str(self.group)
 
     def landed_on_event(self, player, dice):
         if self.owner:

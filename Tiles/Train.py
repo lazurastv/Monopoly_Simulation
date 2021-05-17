@@ -2,8 +2,8 @@ from Tiles.Property import Property
 
 
 class Train(Property):
-    def __init__(self, name, group):
-        super().__init__(name, 200, 100, group)
+    def __init__(self, name):
+        super().__init__(name, 200, 100)
 
     def rent(self, dice):
         val = self.group.count(self.owner)
