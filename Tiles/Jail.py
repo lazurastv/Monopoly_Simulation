@@ -33,7 +33,9 @@ class Jail(Tile):
             self.remove_from_jail(player)
 
     def use_jail_card(self, player):
-        if player.has_jail_card():
+        if not player.has_jail_card():
+            print("You don't have a jail card!")
+        else:
             player.use_jail_card()
             self.remove_from_jail(player)
 

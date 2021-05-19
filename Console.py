@@ -1,4 +1,5 @@
 from Dice import Dice
+from Tiles.Hotel import Hotel
 
 
 def parse(player_input):
@@ -19,6 +20,7 @@ class Console:
         self.current_player_id = 0
         self.dice = Dice()
         self.turn = True
+        self.can_throw = True
 
     def get_player_input(self):
         self.turn = True
@@ -44,31 +46,61 @@ class Console:
         self.get_player_input()
 
     def roll(self):
-        self.dice.throw()
+        if self.can_throw:
+            self.dice.throw()
+            self.can_throw = self.dice.same()
+            if self.dice.repeats < 3:
+                self.get_current_player().move(self.dice.value())
+            else:
+                self.game.get_tile("Jail").put_in_jail(self.get_current_player())
 
     def buy(self):
-        self.game.buy(self.get_current_player(), self.get_current_player().position)
+        self.game.get_tile(self.get_current_player().position).buy(self.get_current_player())
 
     def auction(self):
         pass
 
+    def verify_owner(self, target):
+        if target is not Hotel:
+            print("Tile is not a buildable property!")
+            return False
+        elif not self.get_current_player().has(target):
+            print("You don't own that!")
+            return False
+        else:
+            return True
+
     def buy_house(self, tile):
-        pass
+        target = self.game.get_tile(tile)
+        if self.verify_owner(target):
+            target.buy_house()
 
     def sell_house(self, tile):
-        pass
+        target = self.game.get_tile(tile)
+        if self.verify_owner(target):
+            target.sell_house()
 
     def mortgage(self, tile):
-        pass
+        target = self.game.get_tile(tile)
+        if self.verify_owner(target):
+            target.take_mortgage()
 
     def repay(self, tile):
-        pass
+        target = self.game.get_tile(tile)
+        if self.verify_owner(target):
+            target.pay_mortgage()
 
     def use_card(self):
-        pass
+        if not self.can_throw:
+            print("Card must be used before throwing!")
+        else:
+            self.game.get_tile("Jail").use_card(self.get_current_player())
 
     def buy_out(self):
-        pass
+        if not self.can_throw:
+            print("Buy out must happen before throw!")
+        else:
+            self.game.get_tile("Jail").buy_out(self.get_current_player())
 
     def trade(self, *args):
         pass

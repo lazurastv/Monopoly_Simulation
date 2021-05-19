@@ -1,3 +1,6 @@
+from Tiles.Property import Property
+
+
 class Player:
 
     def __init__(self, id_num, money, game, position=0, properties=None, card=False):
@@ -32,8 +35,13 @@ class Player:
         amount //= 1
         self.money += amount
 
-    def has(self, amount):
-        return self.money >= amount
+    def has(self, item):
+        if item is int or item is float:
+            return self.money >= item
+        elif issubclass(Property, item.__class__):
+            return item in self.properties
+        else:
+            return False
 
     def get_jail_card(self):
         self.jail_card = True
@@ -48,14 +56,13 @@ class Player:
         start = self.position
         self.position = to
         self.crossed_start(start)
-        self.tile_on().landed_on_event()
 
     def move(self, amount):
         start = self.position
         self.position += amount
         self.position %= 40
         self.crossed_start(start)
-        self.tile_on().landed_on_event()
+        self.tile_on().landed_on_event(amount)
 
     def tile_on(self):
         return self.game.board.get_index(self.position)
