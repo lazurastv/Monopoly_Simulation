@@ -12,7 +12,7 @@ class Property(Tile):
         self.owner = owner
 
     def __str__(self):
-        return str(super()) + ": $" + str(self.price) + " => $" + str(self.owner) + " " + str(self.group)
+        return super().__str__() + ": $" + str(self.price) + " => $" + str(self.owner) + " " + str(self.group)
 
     def landed_on_event(self, player, dice):
         if self.owner:
@@ -29,7 +29,7 @@ class Property(Tile):
         self.group = group
 
     def buy(self, player, price=None):
-        if not price:
+        if not isinstance(price, int):
             price = self.price
         if player.has(price):
             player.pay(price)

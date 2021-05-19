@@ -1,69 +1,80 @@
-class Console:
-
-    def __init__(self, keywords: dict, max_parameters):
-        self.keywords = keywords
-        self.max_parameters = max_parameters
-
-    def parse_text(self, command: str):
-        command = command.split()
-        n = len(command)
-        if n < 1:
-            print("No command given!")
-        elif n > self.max_parameters:
-            print("Command has too many parameters!")
-        else:
-            try:
-                function_tuple = self.get_function(command)
-                parameters = convert_parameters(command, function_tuple)
-                run_function(function_tuple, parameters)
-            except KeyError:
-                print("Invalid function! Try: ", self.keywords.keys())
-            except NotEnoughParameters:
-                print("Not enough parameters!")
-            except TooManyParameters:
-                print("Too many parameters!")
-            except ValueError:
-                print(ValueError)
-
-    def get_function(self, command):
-        function_tuple = self.keywords.get(command[0], None)
-        if function_tuple:
-            return function_tuple
-        else:
-            raise KeyError
+from Dice import Dice
 
 
-class TooManyParameters(Exception):
-    pass
-
-
-class NotEnoughParameters(Exception):
-    pass
-
-
-def check_parameter_count(command, function_tuple):
-    parameters_expected = len(function_tuple)
-    parameters_given = len(command)
-    if parameters_given > parameters_expected:
-        raise TooManyParameters
-    else:
-        raise NotEnoughParameters
-
-
-def convert_parameter(value, conversion_type):
-    return conversion_type(value)
-
-
-def convert_parameters(command, function_tuple):
-    check_parameter_count(command, function_tuple)
-    parameter_values = []
-    for i in range(1, len(function_tuple)):
+def parse(player_input):
+    player_input = player_input.split()
+    command = player_input[0]
+    args = player_input[1:]
+    for i in range(len(args)):
         try:
-            parameter_values.append(convert_parameter(command[i], function_tuple[i]))
+            args[i] = int(args[i])
         except ValueError:
-            raise ValueError("Parameter ", i, " of type ", function_tuple[i])
-    return parameter_values
+            continue
+    return command, args
 
 
-def run_function(function_tuple, pars):
-    function_tuple[0](*pars)
+class Console:
+    def __init__(self, game):
+        self.game = game
+        self.current_player_id = 0
+        self.dice = Dice()
+        self.turn = True
+
+    def get_player_input(self):
+        self.turn = True
+        print("Type a command:")
+        while self.turn:
+            player_input = input()
+            [command, args] = parse(player_input)
+            try:
+                self.__getattribute__(command)(*args)
+            except AttributeError:
+                print("Wrong command!")
+            except ValueError:
+                print("Wrong arguments!")
+
+    def get_current_player(self):
+        return self.game.get_player(self.current_player_id)
+
+    def next_player(self):
+        self.current_player_id += 1
+        self.current_player_id %= self.game.player_count
+        self.dice = Dice()
+        self.turn = False
+        self.get_player_input()
+
+    def roll(self):
+        self.dice.throw()
+
+    def buy(self):
+        self.game.buy(self.get_current_player(), self.get_current_player().position)
+
+    def auction(self):
+        pass
+
+    def buy_house(self, tile):
+        pass
+
+    def sell_house(self, tile):
+        pass
+
+    def mortgage(self, tile):
+        pass
+
+    def repay(self, tile):
+        pass
+
+    def use_card(self):
+        pass
+
+    def buy_out(self):
+        pass
+
+    def trade(self, *args):
+        pass
+
+    def info_player(self, player):
+        pass
+
+    def info_tile(self, tile):
+        pass
