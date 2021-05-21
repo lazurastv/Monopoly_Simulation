@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from Gameplay.Player import Player
+from gameplay.player import Player
 
 
 class PlayerTest(unittest.TestCase):
@@ -53,8 +53,8 @@ class PlayerTest(unittest.TestCase):
         self.assertTrue(player.has_money(1500))
         self.assertFalse(player.has_money(2000))
 
-    @patch("Tiles.Property.Property")
-    @patch("Tiles.Property.Property")
+    @patch("tiles.Property.Property")
+    @patch("tiles.Property.Property")
     def test_has_property(self, mock_1, mock_2):
         tile_a = mock_1.return_value
         tile_b = mock_2.return_value
@@ -62,7 +62,7 @@ class PlayerTest(unittest.TestCase):
         self.assertTrue(player.has_property(tile_a))
         self.assertFalse(player.has_property(tile_b))
 
-    @patch("Tiles.Property.Property")
+    @patch("tiles.Property.Property")
     def test_connection(self, mock):
         tile = mock.return_value
         player = Player(properties=[tile])

@@ -1,21 +1,13 @@
-def parse(text):
-    words = text.split()
-    command = words[0]
-    args = words[1:]
-    for i in range(len(args)):
-        try:
-            args[i] = int(args[i])
-        except ValueError:
-            continue
-    return command, args
+from control.parser import parse
 
 
 class Auction:
-    def __init__(self, players):
+    def __init__(self, tile, players):
+        self.tile = tile
         self.players = players.copy()
         self.value = 0
 
-    def auction(self):
+    def start(self):
         current_player = 0
         while True:
             print("Current bet:", self.value)
@@ -28,22 +20,32 @@ class Auction:
                 print("Wrong arguments!")
             player_count = self.players.count()
             if player_count == 1:
-                return self.players.get(0), self.value
+                self.finish()
+                return
             else:
                 current_player += 1
-                current_player %= player_count
+                if current_player == player_count:
+                    current_player = 0
+                    for player in self.players:
+                        if not player.has_money(self.value):
+                            self.players.remove(player)
+
+    def finish(self):
+        self.tile.buy(self.players.get(0), self.value)
 
     def run(self, command, args, player):
         if command == "bet":
-            self.bet(*args)
+            self.bet(player, *args)
         elif command == "end":
             self.end(player)
         else:
             print("Wrong command!")
 
-    def bet(self, amount):
+    def bet(self, player, amount):
         if self.value >= amount:
             print("Bet must be greater than current bet!")
+        elif not player.has_money(amount):
+            print("You don't have this much!")
         else:
             self.value = amount
 

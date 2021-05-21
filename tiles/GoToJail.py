@@ -1,4 +1,4 @@
-from Tiles.Tile import Tile
+from tiles.tile import Tile
 
 
 class GoToJail(Tile):

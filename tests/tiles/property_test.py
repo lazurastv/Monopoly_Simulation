@@ -1,12 +1,12 @@
 import unittest
 from unittest.mock import patch
 
-from Tiles.Property import Property
+from tiles.property import Property
 
 
 class PropertyTest(unittest.TestCase):
-    @patch("Gameplay.Player.Player")
-    @patch("Gameplay.Player.Player")
+    @patch("gameplay.Player.Player")
+    @patch("gameplay.Player.Player")
     def test_landed_on(self, mock_1, mock_2):
         player_1 = mock_1.return_value
         player_2 = mock_2.return_value

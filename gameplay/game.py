@@ -1,6 +1,6 @@
-from Console import Console
-from Players import Players
-from Tiles.Board import Board
+from control.console import Console
+from gameplay.players import Players
+from tiles.board import Board
 
 
 class Game:
@@ -21,3 +21,6 @@ class Game:
 
     def get_tile(self, tile):
         return self.board.get(tile)
+
+    def start(self):
+        self.console.get_player_input()

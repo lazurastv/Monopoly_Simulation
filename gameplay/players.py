@@ -1,11 +1,11 @@
-from Player import Player
+from gameplay.player import Player
 
 
 class Players:
     def __init__(self, starting_money, amount):
         self.players = []
         for i in range(amount):
-            self.players.append(Player(i, starting_money, None))
+            self.players.append(Player(starting_money))
 
     def __iter__(self):
         return iter(self.players)

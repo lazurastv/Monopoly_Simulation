@@ -1,13 +1,14 @@
 import json
+from pathlib import Path
 
-from Tiles.GoToJail import GoToJail
-from Tiles.Group import load_groups
-from Tiles.Jail import Jail
-from Tiles.Train import Train
-from Tiles.Works import Works
-from Tiles.Hotel import Hotel
-from Tiles.Tax import Tax
-from Tiles.Tile import Tile
+from tiles.goToJail import GoToJail
+from tiles.group import load_groups
+from tiles.jail import Jail
+from tiles.train import Train
+from tiles.works import Works
+from tiles.hotel import Hotel
+from tiles.tax import Tax
+from tiles.tile import Tile
 
 
 class Board:
@@ -26,7 +27,8 @@ class Board:
         self.load_jail_tiles()
 
     def load(self, tile_type, file):
-        with open("../Data/" + file + "_tiles.json") as data_file:
+        filename = "../data/" + file + "_tiles.json"
+        with open(Path(__file__).parent / filename) as data_file:
             data = json.load(data_file)
             for p in data["tiles"]:
                 index = p["index"]
@@ -45,11 +47,11 @@ class Board:
                 self.tiles[self.get(owned.name)] = owned
         # load_groups?
 
-    def get(self, tile):
-        if tile is int:
-            return self.tiles[tile]
-        elif tile is str:
-            return self.tiles[self.index_of(tile)]
+    def get(self, item):
+        try:
+            return self.tiles[item]
+        except IndexError:
+            return self.tiles[self.index_of(item)]
 
     def index_of(self, name):
         return self.tile_mapping[name]

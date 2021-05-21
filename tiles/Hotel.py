@@ -1,4 +1,4 @@
-from Tiles.Property import Property
+from tiles.property import Property
 
 
 class Hotel(Property):
@@ -12,7 +12,9 @@ class Hotel(Property):
         return super().__str__() + ", current rent: $" + str(self.rent(None)) + ", h = " + str(self.houses)
 
     def rent(self, dice):
-        if self.houses == 0:
+        if not self.owner:
+            return 0
+        elif self.houses == 0:
             if self.group.full_set(self.owner):
                 return self.rents[0] * 2
             else:

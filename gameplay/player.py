@@ -1,6 +1,3 @@
-from Tiles.Property import Property
-
-
 class Player:
 
     def __init__(self, money=1500, position=0, properties=None, card=False):

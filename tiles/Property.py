@@ -1,4 +1,4 @@
-from Tiles.Tile import Tile
+from tiles.tile import Tile
 
 
 class Property(Tile):
@@ -20,6 +20,12 @@ class Property(Tile):
     def rent(self, dice):
         return 0
 
+    def change_owner(self, player):
+        if self.owner:
+            self.owner.remove_property(self)
+        self.owner = player
+        player.add_property(self)
+
     def buy(self, player, price=None):
         if price is None:
             price = self.price
@@ -29,8 +35,7 @@ class Property(Tile):
             print("Not enough money to purchase!")
         else:
             player.pay(price)
-            self.owner = player
-            player.add_property(self)
+            self.change_owner(player)
 
     def take_mortgage(self, player):
         if player != self.owner:

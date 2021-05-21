@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 
 class Group:
@@ -9,7 +10,7 @@ class Group:
         return str([x.name for x in self.tiles])
 
     def count(self, player):
-        owns = [player.has(x) and not x.mortgaged for x in self.tiles]
+        owns = [player.has_tile(x) and not x.mortgaged for x in self.tiles]
         return owns.count(True)
 
     def full_set(self, player):
@@ -26,9 +27,10 @@ class Group:
 
 
 def load_groups(board):
-    with open("../Data/groups.json") as group_file:
+    with open(Path(__file__).parent / "../data/groups.json")\
+            as group_file:
         data = json.load(group_file)
         for indexes in data["groups"]:
-            group = Group(*[board.get_index(index) for index in indexes["members"]])
+            group = Group(*[board.get(index) for index in indexes["members"]])
             for index in indexes["members"]:
-                board.get_index(index).group = group
+                board.get(index).group = group

@@ -1,4 +1,4 @@
-from Tiles.Property import Property
+from tiles.property import Property
 
 
 class Works(Property):

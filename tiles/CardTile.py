@@ -1,4 +1,4 @@
-from Tiles.Tile import Tile
+from tiles.Tile import Tile
 
 
 class CardTile(Tile):

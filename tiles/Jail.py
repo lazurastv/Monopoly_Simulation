@@ -1,5 +1,5 @@
-from Gameplay.Player import Player
-from Tiles.Tile import Tile
+from gameplay.player import Player
+from tiles.tile import Tile
 
 
 class Jail(Tile):
