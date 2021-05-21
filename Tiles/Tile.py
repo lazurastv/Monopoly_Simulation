@@ -6,11 +6,7 @@ class Tile:
         return self.name
 
     def starting_from_event(self, player, dice):
-        start = player.position
-        player.move(dice.value)
-        if start > player.position:
-            player.earn(200)
-        self.board.get_index(player.position).landed_on_event()
+        player.move(dice.value())
 
     def landed_on_event(self, player, dice):
-        pass
+        player.crossed_start_bonus()

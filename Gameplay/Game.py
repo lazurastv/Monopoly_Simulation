@@ -14,7 +14,10 @@ class Game:
         self.console = Console(self)
 
     def get_player(self, index):
-        return self.players[index]
+        return self.players.get(index)
+
+    def get_player_count(self):
+        return self.players.count()
 
     def get_tile(self, tile):
         return self.board.get(tile)

@@ -1,4 +1,4 @@
-from Player import Player
+from Gameplay.Player import Player
 from Tiles.Tile import Tile
 
 
@@ -28,12 +28,18 @@ class Jail(Tile):
         self.jailed_players.pop(player)
 
     def buy_out(self, player):
-        if player.has(Jail.fee):
+        if player not in self:
+            print("You are not in jail!")
+        elif not player.has(Jail.fee):
+            print("You don't have enough money for a buy out!")
+        else:
             player.pay(Jail.fee)
             self.remove_from_jail(player)
 
     def use_jail_card(self, player):
-        if not player.has_jail_card():
+        if player not in self:
+            print("You are not in jail!")
+        elif not player.has_jail_card():
             print("You don't have a jail card!")
         else:
             player.use_jail_card()
