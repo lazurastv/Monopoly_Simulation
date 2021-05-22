@@ -1,13 +1,11 @@
 {
   "tiles": [
     {
-      "index": 12,
       "args": {
         "name": "Electric Company"
       }
     },
     {
-      "index": 28,
       "args": {
         "name": "Water Works"
       }

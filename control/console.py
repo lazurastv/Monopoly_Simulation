@@ -46,9 +46,9 @@ class Console:
     def get_tile(self, tile):
         return self.game.get_tile(tile)
 
-    def next_player(self):
+    def next_player(self):  # must roll and must have bought or auctioned tile!
         self.current_player_id += 1
-        self.current_player_id %= self.game.player_count()
+        self.current_player_id %= self.game.get_player_count()
         self.dice = Dice()
 
     def roll(self):
@@ -67,10 +67,10 @@ class Console:
     def buy(self):
         tile_managing.buy(self.get_current_tile(), self.get_current_player())
 
-    def buy_house(self, tile):
+    def build(self, tile):
         tile_managing.buy_house(self.get_tile(tile), self.get_current_player())
 
-    def sell_house(self, tile):
+    def destroy(self, tile):
         tile_managing.sell_house(self.get_tile(tile), self.get_current_player())
 
     def mortgage(self, tile):
@@ -87,16 +87,22 @@ class Console:
         if not self.can_throw:
             print("Card must be used before throwing!")
         else:
-            self.get_tile("Jail").use_card(self.get_current_player())
+            jail = self.get_tile("Jail")
+            current_player = self.get_current_player()
+            jail.use_jail_card(current_player)
 
     def buy_out(self):
         if not self.can_throw:
             print("Buy out must happen before throw!")
         else:
-            self.get_tile("Jail").buy_out(self.get_current_player())
+            jail = self.get_tile("Jail")
+            current_player = self.get_current_player()
+            jail.buy_out(current_player)
 
     def trade(self, player_id, give, *tiles):
-        self.trading.load(self.get_current_player(), self.get_player(player_id), give, tiles)
+        current_player = self.get_current_player()
+        other_player = self.get_player(player_id)
+        self.trading.load(current_player, other_player, give, [self.get_tile(x) for x in tiles])
 
     def accept(self):
         self.trading.accept(self.get_current_player())

@@ -13,6 +13,9 @@ class Jail(Tile):
     def __contains__(self, player):
         return player is Player and player in self.jailed_players.keys()
 
+    def __str__(self):
+        return super().__str__() + ", jailed: " + str(self.jailed_players)
+
     def starting_from_event(self, player, dice):
         if player in self:
             if self.jailed_players[player] < 3 and not self.rolled_doubles(player, dice):

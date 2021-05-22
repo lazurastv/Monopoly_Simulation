@@ -10,19 +10,24 @@ class Players:
     def __iter__(self):
         return iter(self.players)
 
+    def __copy__(self):
+        copy = Players(0, 0)
+        copy.players = self.players.copy()
+        return copy
+
     def pay(self, amount, player):
         for p in self.players:
             if p != player:
                 p.pay(amount, player)
 
     def get(self, index):
-        return self.players[index]
+        try:
+            return self.players[index]
+        except IndexError:
+            print("Player doesn't exist!")
 
     def count(self):
         return len(self.players)
-
-    def copy(self):
-        return self
 
     def remove(self, player):
         self.players.remove(player)

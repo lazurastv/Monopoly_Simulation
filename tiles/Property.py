@@ -11,7 +11,7 @@ class Property(Tile):
         self.owner = owner
 
     def __str__(self):
-        return super().__str__() + ": $" + str(self.price) + ", owner: " + str(self.owner) + ", " + str(self.group)
+        return super().__str__() + ", owner: " + str(self.owner) + ", " + str(self.group)
 
     def landed_on_event(self, player, dice):
         if self.owner and player != self.owner:
@@ -20,8 +20,11 @@ class Property(Tile):
     def rent(self, dice):
         return 0
 
+    def owned(self):
+        return self.owner is not None
+
     def change_owner(self, player):
-        if self.owner:
+        if self.owned():
             self.owner.remove_property(self)
         self.owner = player
         player.add_property(self)
@@ -29,7 +32,7 @@ class Property(Tile):
     def buy(self, player, price=None):
         if price is None:
             price = self.price
-        if self.owner:
+        if self.owned():
             print("Tile already has owner!")
         elif not player.has(price):
             print("Not enough money to purchase!")
@@ -40,7 +43,7 @@ class Property(Tile):
     def take_mortgage(self, player):
         if player != self.owner:
             print("You are not the owner!")
-        if self.mortgaged:
+        elif self.mortgaged:
             print("Property is already mortgaged!")
         else:
             self.owner.earn(self.mortgage)
@@ -50,7 +53,7 @@ class Property(Tile):
         amount = self.mortgage * 1.1
         if player != self.owner:
             print("You are not the owner!")
-        if not self.mortgaged:
+        elif not self.mortgaged:
             print("Property isn't mortgaged!")
         elif not self.owner.has(amount):
             print("You don't have the money to pay the mortgage!")

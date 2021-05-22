@@ -8,6 +8,6 @@ class Works(Property):
     def rent(self, dice):
         val = self.group.count(self.owner)
         if val == 1:
-            return dice.value * 4
+            return dice.value() * 4
         else:
-            return dice.value * 10
+            return dice.value() * 10

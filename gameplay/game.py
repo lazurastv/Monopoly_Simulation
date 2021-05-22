@@ -1,6 +1,6 @@
 from control.console import Console
 from gameplay.players import Players
-from tiles.board import Board
+from gameplay.board import Board
 
 
 class Game:

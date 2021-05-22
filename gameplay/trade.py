@@ -11,8 +11,10 @@ class Trade:
         self.verify()
 
     def verify(self):
-        if not self.player_1.has_money(self.diff) or not self.player_2.has_money(self.diff):
-            raise TradeException("Insufficient funds for trade!")
+        if self.diff > 0 and not self.player_1.has(self.diff):
+            raise TradeException(self.player_1, " lacks the necessary funds!")
+        elif self.diff < 0 and not self.player_2.has(self.diff):
+            raise TradeException(self.player_2, " lacks the necessary funds!")
         else:
             for tile in self.tiles:
                 if tile.owner != self.player_1 and tile.owner != self.player_2:
@@ -21,12 +23,13 @@ class Trade:
     def accept(self, player):
         if player != self.player_2:
             print("You cannot accept this trade!")
-        elif self.diff > 0:
+            return
+        if self.diff > 0:
             self.player_1.pay(self.diff, self.player_2)
         else:
             self.player_2.pay(self.diff, self.player_1)
-            for tile in self.tiles:
-                if tile.owner == self.player_1:
-                    tile.change_owner(self.player_2)
-                else:
-                    tile.change_owner(self.player_1)
+        for tile in self.tiles:
+            if tile.owner == self.player_1:
+                tile.change_owner(self.player_2)
+            else:
+                tile.change_owner(self.player_1)

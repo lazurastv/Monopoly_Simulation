@@ -6,18 +6,20 @@ class Player:
         if properties:
             self.properties = properties
         else:
-            self.properties = []
+            self.properties = set()
         self.jail_card = card
         self.start = position
 
     def __str__(self):
         return "$" + str(self.money) + ", at " + str(self.position)
 
-    def __eq__(self, other):
-        return other is Player and str(self) == str(other)
+    def __copy__(self):
+        copy = Player(self.money, self.position, self.properties, self.jail_card)
+        copy.start = self.start
+        return copy
 
     def add_property(self, tile):
-        self.properties.append(tile)
+        self.properties.add(tile)
 
     def remove_property(self, tile):
         self.properties.remove(tile)
@@ -25,18 +27,20 @@ class Player:
     def pay(self, amount, player=None):
         amount //= 1
         self.money -= amount
-        if player:
+        try:
             player.earn(amount)
+        except AttributeError:
+            pass
 
     def earn(self, amount):
         amount //= 1
         self.money += amount
 
-    def has_money(self, amount):
-        return self.money >= amount
-
-    def has_property(self, tile):
-        return tile in self.properties
+    def has(self, item):
+        try:
+            return self.money >= item
+        except TypeError:
+            return item in self.properties
 
     def get_jail_card(self):
         self.jail_card = True

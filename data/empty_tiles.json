@@ -1,13 +1,11 @@
 {
   "tiles": [
     {
-      "index": 0,
       "args": {
         "name": "Start"
       }
     },
     {
-      "index": 20,
       "args": {
         "name": "Free Parking"
       }

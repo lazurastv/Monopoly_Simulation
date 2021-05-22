@@ -8,7 +8,7 @@ class Dice:
         self.repeats = 0
 
     def __str__(self):
-        return str(self.first) + ", " + str(self.second) + ", throw " + str(self.repeats)
+        return str(self.first) + ", " + str(self.second) + ", throw " + str(self.repeats + 1)
 
     def throw(self):
         self.first = randint(1, 6)

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from tiles.goToJail import GoToJail
+from tiles.gotojail import GoToJail
 from tiles.group import load_groups
 from tiles.jail import Jail
 from tiles.train import Train
@@ -11,10 +11,15 @@ from tiles.tax import Tax
 from tiles.tile import Tile
 
 
+def load_mapping():
+    with open(Path(__file__).parent / "../data/tile_indices.json") as mapping:
+        return json.load(mapping)
+
+
 class Board:
     def __init__(self):
         self.tiles = list(range(40))
-        self.tile_mapping = {}
+        self.tile_mapping = load_mapping()
         self.load_tiles()
         load_groups(self)
 
@@ -31,15 +36,13 @@ class Board:
         with open(Path(__file__).parent / filename) as data_file:
             data = json.load(data_file)
             for p in data["tiles"]:
-                index = p["index"]
                 loaded_tile = tile_type(**p["args"])
-                self.tiles[index] = loaded_tile
-                self.tile_mapping[loaded_tile.name] = index
+                self.tiles[self.tile_mapping[loaded_tile.name]] = loaded_tile
 
     def load_jail_tiles(self):
-        jail_tile = Jail(10)
-        self.tiles[10] = jail_tile
-        self.tiles[30] = GoToJail(jail_tile)
+        jail_tile = Jail(self.tile_mapping["Jail"])
+        self.tiles[self.tile_mapping["Jail"]] = jail_tile
+        self.tiles[self.tile_mapping["Go to Jail"]] = GoToJail(jail_tile)
 
     def load_from_players(self, players):
         for player in players:
@@ -50,8 +53,11 @@ class Board:
     def get(self, item):
         try:
             return self.tiles[item]
-        except IndexError:
+        except TypeError:
             return self.tiles[self.index_of(item)]
 
     def index_of(self, name):
-        return self.tile_mapping[name]
+        try:
+            return self.tile_mapping[name]
+        except IndexError:
+            print("Such a tile does not exist!")

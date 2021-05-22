@@ -9,12 +9,13 @@ class Hotel(Property):
         self.houses = 0
 
     def __str__(self):
-        return super().__str__() + ", current rent: $" + str(self.rent(None)) + ", h = " + str(self.houses)
+        addon = ""
+        if self.owner:
+            addon = ", rent = " + str(self.rent(None))
+        return super().__str__() + addon
 
     def rent(self, dice):
-        if not self.owner:
-            return 0
-        elif self.houses == 0:
+        if self.houses == 0:
             if self.group.full_set(self.owner):
                 return self.rents[0] * 2
             else:
@@ -31,7 +32,7 @@ class Hotel(Property):
     def buy_house(self, player):
         if player != self.owner:
             print("You are not the owner!")
-        if not self.group.full_set(self.owner):
+        elif not self.group.full_set(self.owner):
             print("You don't own the group!")
         elif not self.owner.has(self.house_price):
             print("You can't afford a house! Costs $", self.house_price)
@@ -46,7 +47,7 @@ class Hotel(Property):
     def sell_house(self, player):
         if player != self.owner:
             print("You are not the owner!")
-        if self.houses == 0:
+        elif self.houses == 0:
             print("No houses are built here!")
         elif self.houses < self.group.highest_house():
             print("Houses must be sold equally!")

@@ -1,10 +1,10 @@
 def parse(player_input):
     player_input = player_input.split()
-    command = player_input[0]
-    args = player_input[1:]
-    for i in range(len(args)):
+    for i in range(len(player_input)):
         try:
-            args[i] = int(args[i])
+            player_input[i] = int(player_input[i])
         except ValueError:
             continue
+    command = player_input[0]
+    args = player_input[1:]
     return command, args
