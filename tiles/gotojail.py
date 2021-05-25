@@ -2,8 +2,8 @@ from tiles.tile import Tile
 
 
 class GoToJail(Tile):
-    def __init__(self, jail):
-        super().__init__("Go to Jail")
+    def __init__(self, pos, jail):
+        super().__init__(pos)
         self.jail = jail
 
     def landed_on_event(self, player, dice):

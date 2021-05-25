@@ -1,17 +1,15 @@
-from gameplay.player import Player
 from tiles.tile import Tile
 
 
 class Jail(Tile):
     fee = 50
 
-    def __init__(self, index):
-        super().__init__("Jail")
-        self.index = index
+    def __init__(self, pos):
+        super().__init__(pos)
         self.jailed_players = {}
 
     def __contains__(self, player):
-        return player is Player and player in self.jailed_players.keys()
+        return player in self.jailed_players.keys()
 
     def __str__(self):
         return super().__str__() + ", jailed: " + str(self.jailed_players)
@@ -24,7 +22,7 @@ class Jail(Tile):
         player.move(dice.value)
 
     def put_in_jail(self, player):
-        player.move_to(self.index)
+        player.move_to(self.position)
         self.jailed_players[player] = 0
 
     def remove_from_jail(self, player):

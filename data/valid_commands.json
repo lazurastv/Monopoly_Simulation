@@ -1,21 +1,19 @@
-{
-  "commands": [
-    "roll",
-    "next_player",
-    "auction",
-    "buy",
-    "build",
-    "destroy",
-    "mortgage",
-    "repay",
-    "use_card",
-    "buy_out",
-    "trade",
-    "accept",
-    "refuse",
-    "info_me",
-    "info_player",
-    "info_tile",
-    "info_dice"
-  ]
-}
+[
+  "roll",
+  "next_player",
+  "auction",
+  "buy",
+  "build",
+  "destroy",
+  "mortgage",
+  "repay",
+  "use_card",
+  "buy_out",
+  "trade",
+  "accept",
+  "refuse",
+  "info_me",
+  "info_player",
+  "info_tile",
+  "info_dice"
+]

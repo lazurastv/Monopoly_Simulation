@@ -1,24 +1,14 @@
-{
-  "tiles": [
-    {
-      "args": {
-        "name": "Reading Railroad"
-      }
-    },
-    {
-      "args": {
-        "name": "Pennsylvania Railroad"
-      }
-    },
-    {
-      "args": {
-        "name": "B & O Railroad"
-      }
-    },
-    {
-      "args": {
-        "name": "Short Line"
-      }
-    }
-  ]
-}
+[
+  {
+    "name": "Reading Railroad"
+  },
+  {
+    "name": "Pennsylvania Railroad"
+  },
+  {
+    "name": "B & O Railroad"
+  },
+  {
+    "name": "Short Line"
+  }
+]

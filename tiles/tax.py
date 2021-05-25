@@ -2,13 +2,12 @@ from tiles.tile import Tile
 
 
 class Tax(Tile):
-    def __init__(self, name, cost):
-        super().__init__(name)
+    def __init__(self, pos, cost):
+        super().__init__(pos)
         self.cost = cost
 
     def __str__(self):
         return super().__str__() + ", $" + str(self.cost)
 
-    def landed_on_event(self, player, dice=None):
+    def landed_on_event(self, player, dice):
         player.pay(self.cost)
-        player.crossed_start_bonus()

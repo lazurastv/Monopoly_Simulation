@@ -2,8 +2,8 @@ from tiles.tile import Tile
 
 
 class Property(Tile):
-    def __init__(self, name, price, mortgage, group=None, mortgaged=False, owner=None):
-        super().__init__(name)
+    def __init__(self, pos, price, mortgage, group=None, mortgaged=False, owner=None):
+        super().__init__(pos)
         self.price = price
         self.mortgage = mortgage
         self.group = group

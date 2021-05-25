@@ -1,9 +1,9 @@
 from tiles.property import Property
 
 
-class Works(Property):
-    def __init__(self, name):
-        super().__init__(name, 150, 75)
+class Utility(Property):
+    def __init__(self, pos):
+        super().__init__(pos, 150, 75)
         self.from_card = False
 
     def card_rent(self):

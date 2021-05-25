@@ -1,14 +1,8 @@
-{
-  "tiles": [
-    {
-      "args": {
-        "name": "Electric Company"
-      }
-    },
-    {
-      "args": {
-        "name": "Water Works"
-      }
-    }
-  ]
-}
+[
+  {
+    "name": "Electric Company"
+  },
+  {
+    "name": "Water Works"
+  }
+]

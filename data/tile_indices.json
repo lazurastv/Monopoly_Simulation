@@ -32,5 +32,15 @@
   "Short Line": 35,
   "Park Place": 37,
   "Luxury Tax": 38,
-  "Boardwalk": 39
+  "Boardwalk": 39,
+  "Community": [
+    2,
+    17,
+    33
+  ],
+  "Chance": [
+    7,
+    22,
+    36
+  ]
 }

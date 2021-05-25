@@ -1,6 +1,8 @@
-{
-  "name": [
-    "Go",
-    "Free Parking"
-  ]
-}
+[
+  {
+    "name": "Go"
+  },
+  {
+    "name": "Free Parking"
+  }
+]

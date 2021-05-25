@@ -2,8 +2,8 @@ from tiles.property import Property
 
 
 class Hotel(Property):
-    def __init__(self, name, price, mortgage, house_price, rents):
-        super().__init__(name, price, mortgage)
+    def __init__(self, pos, price, mortgage, house_price, rents):
+        super().__init__(pos, price, mortgage)
         self.house_price = house_price
         self.rents = rents
         self.houses = 0

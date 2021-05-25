@@ -38,7 +38,7 @@ class MyTestCase(unittest.TestCase):
             mean += prob[i] * (i + 2)
             variance += prob[i] * (i + 2 - expected_mean) ** 2
         self.assertAlmostEqual(mean, expected_mean, delta=0.7, msg=mean)
-        self.assertAlmostEqual(variance, expected_variance, delta=0.5, msg=variance)
+        self.assertAlmostEqual(variance, expected_variance, delta=0.6, msg=variance)
 
     def test_repeats_distribution(self):
         dice = Dice()

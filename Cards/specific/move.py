@@ -10,3 +10,6 @@ class Move(Card):
         tile_index = game.board.index_of(self.tile)
         player.move_to(tile_index)
         player.land_on(true_tile, None)
+
+    def __str__(self):
+        return "Go to " + str(self.tile)

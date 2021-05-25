@@ -1,12 +1,14 @@
 import json
 from pathlib import Path
 
+from cards.deck import Deck
 from data.file_loader import FileLoader
+from tiles.cardtile import CardTile
 from tiles.gotojail import GoToJail
 from tiles.group import load_groups
 from tiles.jail import Jail
 from tiles.railroad import Train
-from tiles.utility import Works
+from tiles.utility import Utility
 from tiles.hotel import Hotel
 from tiles.tax import Tax
 from tiles.tile import Tile
@@ -18,38 +20,46 @@ def load_mapping():
 
 
 class Board:
-    def __init__(self):
+    def __init__(self, game):
         self.tiles = list(range(40))
-        self.tile_mapping = load_mapping()
-        self.load_tiles()
+        self.tile_mapping = FileLoader().get("Layout")
+        self.load_tiles(game)
         load_groups(self)
 
-    def load_tiles(self):
-        self.load(Tile, "empty")
-        self.load(Tax, "tax")
-        self.load(Works, "work")
-        self.load(Train, "train")
-        self.load(Hotel, "hotel")
+    def load_tiles(self, game):
+        self.load(Tile, "Empty")
+        self.load(Tax, "Tax")
+        self.load(Utility, "Utility")
+        self.load(Train, "Railroad")
+        self.load(Hotel, "Hotel")
         self.load_jail_tiles()
+        self.load_card_tiles(game)
 
-    def load(self, tile_type, file):
-        filename = "../data/" + file + "_tiles.json"
-        with open(Path(__file__).parent / filename) as data_file:
-            data = json.load(data_file)
-            for p in data["tiles"]:
-                loaded_tile = tile_type(**p["args"])
-                self.tiles[self.tile_mapping[loaded_tile.name]] = loaded_tile
+    def load(self, tile_type, datatype):
+        data = FileLoader().get(datatype)
+        for p in data:
+            name = p["name"]
+            p.pop("name")
+            p["pos"] = self.tile_mapping[name]
+            loaded_tile = tile_type(**p)
+            self.tiles[loaded_tile.position] = loaded_tile
 
     def load_jail_tiles(self):
-        jail_tile = Jail(self.tile_mapping["Jail"])
-        self.tiles[self.tile_mapping["Jail"]] = jail_tile
-        self.tiles[self.tile_mapping["Go To Jail"]] = GoToJail(jail_tile)
+        jail_index = self.tile_mapping["Jail"]
+        go_to_jail_index = self.tile_mapping["Go To Jail"]
+        jail_tile = Jail(jail_index)
+        self.tiles[jail_index] = jail_tile
+        self.tiles[go_to_jail_index] = GoToJail(go_to_jail_index, jail_tile)
 
-    def load_from_players(self, players):
-        for player in players:
-            for owned in player.properties:
-                self.tiles[self.get(owned.name)] = owned
-        # load_groups?
+    def load_card_tiles(self, game):
+        self.load_card_tiles_type("Community", game)
+        self.load_card_tiles_type("Chance", game)
+
+    def load_card_tiles_type(self, cardtype, game):
+        deck = Deck(cardtype)
+        indices = self.tile_mapping[cardtype]
+        for index in indices:
+            self.tiles[index] = CardTile(index, deck, game)
 
     def get(self, item):
         try:

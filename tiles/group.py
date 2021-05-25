@@ -1,5 +1,4 @@
-import json
-from pathlib import Path
+from data.file_loader import FileLoader
 
 
 class Group:
@@ -27,10 +26,8 @@ class Group:
 
 
 def load_groups(board):
-    with open(Path(__file__).parent / "../data/groups.json")\
-            as group_file:
-        data = json.load(group_file)
-        for indexes in data["groups"]:
-            group = Group(*[board.get(index) for index in indexes["members"]])
-            for index in indexes["members"]:
-                board.get(index).group = group
+    data = FileLoader().get("Group")
+    for indexes in data["groups"]:
+        group = Group(*[board.get(index) for index in indexes["members"]])
+        for index in indexes["members"]:
+            board.get(index).group = group
