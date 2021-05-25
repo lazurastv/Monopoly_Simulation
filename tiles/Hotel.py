@@ -23,6 +23,9 @@ class Hotel(Property):
         else:
             return self.rents[self.houses]
 
+    def has_hotel(self):
+        return self.houses == 5
+
     def take_mortgage(self, player):
         if self.group.has_houses():
             print("You can't take a mortgage on an improved group!")

@@ -15,10 +15,15 @@ class Players:
         copy.players = self.players.copy()
         return copy
 
-    def pay(self, amount, player):
+    def earn(self, amount, player):
         for p in self.players:
             if p != player:
                 p.pay(amount, player)
+
+    def pay(self, amount, player):
+        for p in self.players:
+            if p != player:
+                player.pay(amount, p)
 
     def get(self, index):
         try:

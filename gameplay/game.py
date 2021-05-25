@@ -22,5 +22,8 @@ class Game:
     def get_tile(self, tile):
         return self.board.get(tile)
 
+    def get_nearest(self, player, filename):
+        return self.board.get_nearest(player, filename)
+
     def start(self):
         self.console.get_player_input()

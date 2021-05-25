@@ -69,3 +69,16 @@ class Player:
     def crossed_start_bonus(self):
         if self.start > self.position:
             self.earn(200)
+
+    def get_house_hotel_count(self):
+        house_count = 0
+        hotel_count = 0
+        for tile in self.properties:
+            try:
+                if tile.has_hotel():
+                    hotel_count += 1
+                else:
+                    house_count += tile.houses
+            except AttributeError:
+                continue
+        return house_count, hotel_count

@@ -10,7 +10,7 @@ class Group:
         return str([x.name for x in self.tiles])
 
     def count(self, player):
-        owns = [player.has_tile(x) and not x.mortgaged for x in self.tiles]
+        owns = [player.has(x) and not x.mortgaged for x in self.tiles]
         return owns.count(True)
 
     def full_set(self, player):

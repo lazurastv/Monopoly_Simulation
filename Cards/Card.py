@@ -1,3 +1,3 @@
 class Card:
-    def action(self, players):
+    def action(self, game, player):
         pass

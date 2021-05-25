@@ -11,3 +11,4 @@ class Tax(Tile):
 
     def landed_on_event(self, player, dice=None):
         player.pay(self.cost)
+        player.crossed_start_bonus()

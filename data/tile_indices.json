@@ -1,5 +1,5 @@
 {
-  "Start": 0,
+  "Go": 0,
   "Mediterranean Avenue": 1,
   "Baltic Avenue": 3,
   "Income Tax": 4,
@@ -25,7 +25,7 @@
   "Ventnor Avenue": 27,
   "Water Works": 28,
   "Marvin Gardens": 29,
-  "Go to Jail": 30,
+  "Go To Jail": 30,
   "Pacific Avenue": 31,
   "North Carolina Avenue": 32,
   "Pennsylvania Avenue": 34,

@@ -1,0 +1,27 @@
+{
+  "move": [
+    "Go",
+    "Go To Jail"
+  ],
+  "money": [
+    10,
+    20,
+    25,
+    50,
+    100,
+    100,
+    100,
+    200,
+    -50,
+    -50,
+    -50
+  ],
+  "group_money": [
+    10
+  ],
+  "pay_hotel": {
+    "house_price": 40,
+    "hotel_price": 115
+  },
+  "get_out": true
+}

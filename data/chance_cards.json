@@ -1,0 +1,29 @@
+{
+  "move": [
+    "Go",
+    "Illinois Avenue",
+    "St. Charles Place",
+    "Boardwalk",
+    "Reading Railroad",
+    "Go To Jail"
+  ],
+  "money": [
+    50,
+    -15,
+    150
+  ],
+  "group_money": [
+    -50
+  ],
+  "pay_hotel": {
+    "house_price": 25,
+    "hotel_price": 100
+  }
+  "special_move": [
+    "Railroad",
+    "Railroad",
+    "Utility"
+  ],
+  "get_out": true,
+  "go_back": true
+}

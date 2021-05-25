@@ -3,7 +3,7 @@ from random import randint
 
 class Deck:
     def __init__(self):
-        self.cards = None
+        self.cards = []
         self.next = 0
 
     def shuffle(self):
