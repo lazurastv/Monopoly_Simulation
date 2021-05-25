@@ -1,9 +1,7 @@
-import json
-from pathlib import Path
-
 import control.tile_managing as tile_managing
 from control.auction import Auction, parse
 from control.trading import Trading
+from data.file_loader import FileLoader
 from gameplay.dice import Dice
 
 
@@ -14,8 +12,7 @@ class Console:
         self.trading = Trading()
         self.can_throw = True
         self.current_player_id = 0
-        with open(Path(__file__).parent / "../data/valid_commands.json") as commands:
-            self.valid_commands = json.load(commands)["commands"]
+        self.valid_commands = FileLoader().get("Commands")
 
     def get_player_input(self):
         while True:
@@ -49,6 +46,7 @@ class Console:
     def next_player(self):  # must roll and must have bought or auctioned tile!
         self.current_player_id += 1
         self.current_player_id %= self.game.get_player_count()
+        self.can_throw = True
         self.dice = Dice()
 
     def roll(self):

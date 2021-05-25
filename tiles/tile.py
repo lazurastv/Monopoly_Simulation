@@ -3,7 +3,7 @@ class Tile:
         self.position = pos
 
     def __str__(self):
-        return self.position
+        return str(self.position)
 
     def starting_from_event(self, player, dice):
         player.move(dice.value())

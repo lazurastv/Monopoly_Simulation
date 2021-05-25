@@ -1,7 +1,7 @@
 {
   "Chance": "chance_cards",
   "Community": "community_cards",
-  "Free": "empty_tiles",
+  "Empty": "empty_tiles",
   "Group": "groups",
   "Hotel": "hotel_tiles",
   "Railroad": "railroad_tiles",

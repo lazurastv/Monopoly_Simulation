@@ -6,7 +6,7 @@ class Group:
         self.tiles = [*properties]
 
     def __str__(self):
-        return str([x.name for x in self.tiles])
+        return str([x.position for x in self.tiles])
 
     def count(self, player):
         owns = [player.has(x) and not x.mortgaged for x in self.tiles]
@@ -27,7 +27,7 @@ class Group:
 
 def load_groups(board):
     data = FileLoader().get("Group")
-    for indexes in data["groups"]:
+    for indexes in data:
         group = Group(*[board.get(index) for index in indexes["members"]])
         for index in indexes["members"]:
             board.get(index).group = group

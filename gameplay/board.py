@@ -70,7 +70,7 @@ class Board:
     def index_of(self, name):
         try:
             return self.tile_mapping[name]
-        except IndexError:
+        except KeyError:
             print("Such a tile does not exist!")
 
     def get_nearest(self, player, datatype):

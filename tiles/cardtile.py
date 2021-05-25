@@ -8,4 +8,6 @@ class CardTile(Tile):
         self.game = game
 
     def landed_on_event(self, player, dice):
-        self.deck.draw().action(self.game, player)
+        card = self.deck.draw()
+        card.action(self.game, player)
+        print(card)
