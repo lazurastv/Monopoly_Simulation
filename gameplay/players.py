@@ -10,7 +10,7 @@ class Players:
     def __iter__(self):
         return iter(self.players)
 
-    def __copy__(self):
+    def __deepcopy__(self):
         copy = Players(0, 0)
         copy.players = self.players.copy()
         return copy

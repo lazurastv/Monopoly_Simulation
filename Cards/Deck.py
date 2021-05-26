@@ -36,7 +36,7 @@ class Deck:
             self.cards[j] = tmp
 
     def draw(self):
-        card = self.cards[self.next].copy()
+        card = self.cards[self.next]
         self.next += 1
         self.next %= len(self.cards)
         return card

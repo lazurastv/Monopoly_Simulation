@@ -7,7 +7,10 @@ class CardTile(Tile):
         self.deck = deck
         self.game = game
 
+    def __str__(self):
+        return "Card tile"
+
     def landed_on_event(self, player, dice):
         card = self.deck.draw()
-        card.action(self.game, player)
         print(card)
+        card.action(self.game, player)

@@ -7,6 +7,5 @@
   "Railroad": "railroad_tiles",
   "Tax": "tax_tiles",
   "Layout": "tile_indices",
-  "Utility": "utility_tiles",
-  "Commands": "valid_commands"
+  "Utility": "utility_tiles"
 }

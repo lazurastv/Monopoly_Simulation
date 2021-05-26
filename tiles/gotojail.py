@@ -6,5 +6,8 @@ class GoToJail(Tile):
         super().__init__(pos)
         self.jail = jail
 
+    def __str__(self):
+        return "Go To Jail"
+
     def landed_on_event(self, player, dice):
         self.jail.put_in_jail(player)

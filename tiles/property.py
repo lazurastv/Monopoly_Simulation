@@ -11,10 +11,10 @@ class Property(Tile):
         self.owner = owner
 
     def __str__(self):
-        return super().__str__() + ", owner: " + str(self.owner) + ", " + str(self.group) + ", " + str(self.price)
+        return super().__str__() + ", " + str(self.group) + ", " + str(self.price)
 
     def landed_on_event(self, player, dice):
-        if self.owner and player != self.owner:
+        if self.owner and player != self.owner and not self.mortgaged:
             player.pay(self.rent(dice), self.owner)
 
     def rent(self, dice):

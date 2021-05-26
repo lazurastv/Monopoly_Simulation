@@ -22,4 +22,5 @@ class Game:
         return self.board.get_nearest(player, filename)
 
     def start(self):
-        self.console.get_player_input()
+        while True:
+            self.console.run(input())

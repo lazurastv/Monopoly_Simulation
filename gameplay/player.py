@@ -1,4 +1,5 @@
 class Player:
+    go_to_jail = None
 
     def __init__(self, money=1500, position=0, properties=None, card=False):
         self.money = money
@@ -11,9 +12,12 @@ class Player:
         self.start = position
 
     def __str__(self):
-        return "$" + str(self.money) + ", at " + str(self.position)
+        text = str(self.money) + ", at " + str(self.position) + ", owns: "
+        for tile in self.properties:
+            text += str(tile.position) + ", "
+        return text
 
-    def __copy__(self):
+    def __deepcopy__(self):
         copy = Player(self.money, self.position, self.properties, self.jail_card)
         copy.start = self.start
         return copy
@@ -54,11 +58,13 @@ class Player:
     def move_to(self, index):
         self.start = self.position
         self.position = index
+        self.crossed_start_bonus()
 
     def move(self, amount):
         self.start = self.position
         self.position += amount
         self.position %= 40
+        self.crossed_start_bonus()
 
     def start_from(self, tile, dice):
         tile.starting_from_event(self, dice)
@@ -67,7 +73,7 @@ class Player:
         tile.landed_on_event(self, dice)
 
     def crossed_start_bonus(self):
-        if self.start > self.position:
+        if self.start > self.position != Player.go_to_jail:
             self.earn(200)
 
     def get_house_hotel_count(self):

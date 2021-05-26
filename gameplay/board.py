@@ -1,8 +1,6 @@
-import json
-from pathlib import Path
-
 from cards.deck import Deck
 from data.file_loader import FileLoader
+from gameplay.player import Player
 from tiles.cardtile import CardTile
 from tiles.gotojail import GoToJail
 from tiles.group import load_groups
@@ -12,11 +10,6 @@ from tiles.utility import Utility
 from tiles.hotel import Hotel
 from tiles.tax import Tax
 from tiles.tile import Tile
-
-
-def load_mapping():
-    with open(Path(__file__).parent / "../data/tile_indices.json") as mapping:
-        return json.load(mapping)
 
 
 class Board:
@@ -50,6 +43,7 @@ class Board:
         jail_tile = Jail(jail_index)
         self.tiles[jail_index] = jail_tile
         self.tiles[go_to_jail_index] = GoToJail(go_to_jail_index, jail_tile)
+        Player.go_to_jail = go_to_jail_index
 
     def load_card_tiles(self, game):
         self.load_card_tiles_type("Community", game)
@@ -66,6 +60,8 @@ class Board:
             return self.tiles[item]
         except TypeError:
             return self.tiles[self.index_of(item)]
+        except IndexError:
+            print("Such a tile does not exist!")
 
     def index_of(self, name):
         try:
@@ -77,9 +73,8 @@ class Board:
         index = player.position
         indices = []
         data = FileLoader().get(datatype)
-        tiles = data["tiles"]
-        for tile in tiles:
-            name = tile["args"]["name"]
+        for tile in data:
+            name = tile["name"]
             indices.append(self.tile_mapping[name])
         target = 40
         if max(indices) < index:

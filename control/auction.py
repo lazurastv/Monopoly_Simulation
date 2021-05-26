@@ -1,65 +1,52 @@
-from control.parser import parse
+from control.parser import Parser
 
 
 class Auction:
-    def __init__(self, tile, players):
-        self.tile = tile
-        self.players = players.__copy__()
-        self.current_player = 0
+    def __init__(self, turn_mgr, players):
+        self.turn_mgr = turn_mgr
+        self.players = players
+        self.players_copy = players.__deepcopy__()
+        self.current_player_id = 0
         self.value = 0
-
-    def verify_correctness(self):
-        try:
-            return not self.tile.owned()
-        except AttributeError:
-            return False
+        self.running = False
+        commands = {
+            "bet": self.bet,
+            "end": self.end
+        }
+        self.parser = Parser(commands)
 
     def start(self):
-        if not self.verify_correctness():
+        if self.turn_mgr.current_tile_owned():
             print("Tile cannot be auctioned!")
-            return
-        self.current_player = 0
-        while True:
-            player_count = self.players.count()
-            if player_count == 1:
-                self.finish()
-                return
-            print("Current bet:", self.value)
-            command, _ = parse(input())
-            try:
-                self.run(command, self.players.get(self.current_player))
-            except TypeError:
-                print("Wrong argument count!")
-            except ValueError:
-                print("Wrong arguments!")
-            new_count = self.players.count()
-            if player_count == new_count:
-                self.current_player += 1
-            if self.current_player >= new_count:
-                self.current_player = 0
-                for player in self.players:
-                    if not player.has(self.value):
-                        self.end(player)
+        else:
+            self.running = True
+
+    def run(self, text):
+        self.parser.parse_input(text)
+        if self.players_copy.count() == 1:
+            self.finish()
 
     def finish(self):
-        self.tile.buy(self.players.get(0), self.value)
+        self.turn_mgr.get_current_tile().buy(self.players_copy.get(0), self.value)
+        self.current_player_id = 0
+        self.value = 0
+        self.players_copy = self.players.__deepcopy__()
+        self.running = False
 
-    def run(self, command, player):
-        if command == "end":
-            self.end(player)
-            return
-        try:
-            self.bet(player, command)
-        except ValueError:
-            print("Error! Type number or end.")
-
-    def bet(self, player, amount):
+    def bet(self, amount):
+        player = self.players_copy.get(self.current_player_id)
         if self.value >= amount:
             print("Bet must be greater than current bet!")
         elif not player.has(amount):
             print("You don't have this much!")
         else:
             self.value = amount
+            self.next()
 
     def end(self, player):
-        self.players.remove(player)
+        self.players_copy.remove(player)
+        self.next()
+
+    def next(self):
+        self.current_player_id += 1
+        self.current_player_id %= self.players_copy.count()
