@@ -12,8 +12,11 @@ class Group:
         owns = [player.has(x) and not x.mortgaged for x in self.tiles]
         return owns.count(True)
 
+    def total(self):
+        return len(self.tiles)
+
     def full_set(self, player):
-        return self.count(player) == len(self.tiles)
+        return self.count(player) == self.total()
 
     def has_houses(self):
         return self.highest_house() != 0

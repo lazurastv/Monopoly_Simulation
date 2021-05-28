@@ -15,11 +15,8 @@ class Hotel(Property):
         return super().__str__() + addon
 
     def rent(self, dice):
-        if self.houses == 0:
-            if self.group.full_set(self.owner):
-                return self.rents[0] * 2
-            else:
-                return self.rents[0]
+        if self.houses == 0 and self.group.full_set(self.owner):
+            return self.rents[0] * 2
         else:
             return self.rents[self.houses]
 

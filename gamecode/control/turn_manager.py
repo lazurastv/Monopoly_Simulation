@@ -6,28 +6,28 @@ class TurnManager:
     def __init__(self, game):
         self.game = game
         self.dice = Dice()
-        self.can_throw = True
+        self.can_roll = True
         self.current_player_id = 0
         self.jail_mgr = JailManager(self, self.game.get_tile("Jail"))
 
     def roll(self):
-        if not self.can_throw:
+        if not self.can_roll:
             print("No more throws left this turn!")
         elif not self.current_tile_owned():
             print("You need to buy or auction the tile first!")
         else:
-            self.dice.throw()
+            self.dice.roll()
             current_player = self.get_current_player()
             if self.dice.repeats < 3:
                 current_player.start_from(self.get_current_tile(), self.dice)
                 current_player.land_on(self.get_current_tile(), self.dice)
             else:
                 self.jail_mgr.put_in_jail(self.get_current_player())
-            self.can_throw = self.dice.same() and not current_player.in_jail
+            self.can_roll = self.dice.same() and not current_player.in_jail
 
     def next(self):
-        if self.can_throw:
-            print("You must throw first!")
+        if self.can_roll:
+            print("You must roll first!")
         elif not self.current_tile_owned():
             print("You must either auction or buy this tile!")
         else:
@@ -37,7 +37,7 @@ class TurnManager:
                 print("We have a winner!")
             self.current_player_id += 1
             self.current_player_id %= self.game.get_player_count()
-            self.can_throw = True
+            self.can_roll = True
             self.dice = Dice()
 
     def use_card(self):

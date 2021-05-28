@@ -12,7 +12,7 @@ class SpecialMove(Card):
         tile = game.get_tile(target)
         tile.card_rent()
         dice = Dice()
-        dice.throw()
+        dice.roll()
         player.land_on(tile, dice)
 
     def __str__(self):

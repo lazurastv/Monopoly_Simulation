@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
         expected_mean = 3.5
         expected_variance = 17.5 / 6
         for _ in range(1000):
-            dice.throw()
+            dice.roll()
             prob[dice.first - 1] += 1
         for i in range(6):
             prob[i] /= 1000
@@ -28,7 +28,7 @@ class MyTestCase(unittest.TestCase):
         expected_mean = 7
         expected_variance = 35 / 6
         for _ in range(1000):
-            dice.throw()
+            dice.roll()
             prob[dice.value() - 2] += 1
         for i in range(11):
             prob[i] /= 1000
@@ -45,7 +45,7 @@ class MyTestCase(unittest.TestCase):
         expected_mean = 1 / 6
         expected_variance = 5 / 36
         for _ in range(1000):
-            dice.throw()
+            dice.roll()
         mean = dice.repeats / 1000
         variance = (24 * mean + 1) / 36
         self.assertAlmostEqual(mean, expected_mean, delta=0.1, msg=mean)
