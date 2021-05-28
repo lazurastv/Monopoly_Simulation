@@ -11,7 +11,7 @@ class Train(Property):
         self.from_card = True
 
     def rent(self, dice):
-        val = self.group.count(self.owner) - 1
+        val = self.group.count(self.owner)
         if self.from_card:
             self.from_card = False
             return self.amount[val] * 2

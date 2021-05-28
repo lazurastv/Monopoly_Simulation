@@ -14,7 +14,7 @@ class Property(Tile):
         return super().__str__() + ", " + str(self.group) + ", " + str(self.price)
 
     def landed_on_event(self, player, dice):
-        if self.owner and player != self.owner and not self.mortgaged:
+        if self.owner and player != self.owner and not self.mortgaged and not self.owner.in_jail:
             player.pay(self.rent(dice), self.owner)
 
     def rent(self, dice):

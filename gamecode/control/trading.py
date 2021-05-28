@@ -55,6 +55,3 @@ class Trading:
 
     def info(self):
         print(self.trade)
-
-# floor of money, the int
-# no rent in jail

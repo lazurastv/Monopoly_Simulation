@@ -23,7 +23,7 @@ class TurnManager:
                 current_player.land_on(self.get_current_tile(), self.dice)
             else:
                 self.jail_mgr.put_in_jail(self.get_current_player())
-            self.can_throw = self.dice.same() and current_player not in self.jail_mgr.jail
+            self.can_throw = self.dice.same() and not current_player.in_jail
 
     def next(self):
         if self.can_throw:

@@ -9,7 +9,7 @@ class Player:
             self.properties = set()
         self.jail_card = card
         self.start = position
-        self.no_bonus = False
+        self.in_jail = False
 
     def __str__(self):
         text = str(self.money) + ", at " + str(self.position) + ", owns: "
@@ -32,7 +32,7 @@ class Player:
         self.properties.remove(tile)
 
     def pay(self, amount, player=None):
-        amount //= 1
+        amount = int(amount)
         self.money -= amount
         try:
             player.earn(amount)
@@ -40,7 +40,7 @@ class Player:
             pass
 
     def earn(self, amount):
-        amount //= 1
+        amount = int(amount)
         self.money += amount
 
     def has(self, item):
@@ -79,7 +79,7 @@ class Player:
         tile.landed_on_event(self, dice)
 
     def crossed_start_bonus(self):
-        if self.start > self.position and not self.no_bonus:
+        if self.start > self.position and not self.in_jail:
             self.earn(200)
 
     def get_house_hotel_count(self):

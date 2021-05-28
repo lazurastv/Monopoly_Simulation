@@ -8,30 +8,27 @@ class Jail(Tile):
         super().__init__(pos)
         self.jailed_players = {}
 
-    def __contains__(self, player):
-        return player in self.jailed_players.keys()
-
     def __str__(self):
         return super().__str__() + ", jailed: " + str(self.jailed_players)
 
     def starting_from_event(self, player, dice):
-        if player in self:
+        if player.in_jail:
             if self.jailed_players[player] < 3 and not self.rolled_doubles(player, dice):
                 return
             self.remove_from_jail(player)
         player.move(dice.value())
 
     def put_in_jail(self, player):
-        player.no_bonus = True
+        player.in_jail = True
         player.move_to(self.position)
-        player.no_bonus = False
         self.jailed_players[player] = 0
 
     def remove_from_jail(self, player):
+        player.in_jail = False
         self.jailed_players.pop(player)
 
     def buy_out(self, player):
-        if player not in self:
+        if not player.in_jail:
             print("You are not in jail!")
         elif not player.has(Jail.fee):
             print("You don't have enough money for a buy out!")
