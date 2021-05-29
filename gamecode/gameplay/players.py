@@ -5,7 +5,7 @@ class Players:
     def __init__(self, starting_money, amount):
         self.players = []
         for i in range(amount):
-            self.players.append(Player(starting_money))
+            self.players.append(Player(i, starting_money))
 
     def __iter__(self):
         return iter(self.players)

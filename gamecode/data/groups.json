@@ -1,6 +1,6 @@
 [
   {
-    "name": "trains",
+    "name": "railroad",
     "members": [
       5,
       15,
@@ -9,7 +9,7 @@
     ]
   },
   {
-    "name": "works",
+    "name": "utility",
     "members": [
       12,
       28

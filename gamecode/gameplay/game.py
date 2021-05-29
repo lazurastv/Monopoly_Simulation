@@ -14,6 +14,15 @@ class Game:
         logic = [ManualLogic(self), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
         self.players.inject_logic(logic)
 
+    def get_groups(self):
+        groups = set()
+        for tile in self.board:
+            try:
+                groups.add(tile.group)
+            except AttributeError:
+                continue
+        return groups
+
     def get_player(self, index):
         return self.players.get(index)
 

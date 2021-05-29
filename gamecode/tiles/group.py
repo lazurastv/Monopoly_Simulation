@@ -2,7 +2,8 @@ from gamecode.data.file_loader import FileLoader
 
 
 class Group:
-    def __init__(self, *properties):
+    def __init__(self, name, *properties):
+        self.name = name
         self.tiles = [*properties]
 
     def __str__(self):
@@ -12,11 +13,27 @@ class Group:
         owns = [player.has(x) and not x.mortgaged for x in self.tiles]
         return owns.count(True)
 
+    def max_ownership(self, players):
+        return max([self.count(x) for x in players])
+
     def total(self):
         return len(self.tiles)
 
+    def owners(self):
+        owner_list = set()
+        for tile in self.tiles:
+            if tile.owner is not None:
+                owner_list.add(tile.owner)
+        return owner_list
+
     def full_set(self, player):
         return self.count(player) == self.total()
+
+    def filled(self):
+        for tile in self.tiles:
+            if tile.owner is None:
+                return False
+        return True
 
     def has_houses(self):
         return self.highest_house() != 0
@@ -31,6 +48,6 @@ class Group:
 def load_groups(board):
     data = FileLoader().get("Group")
     for indexes in data:
-        group = Group(*[board.get(index) for index in indexes["members"]])
+        group = Group(indexes["name"], *[board.get(index) for index in indexes["members"]])
         for index in indexes["members"]:
             board.get(index).group = group

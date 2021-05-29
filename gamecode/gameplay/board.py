@@ -1,6 +1,5 @@
 from gamecode.cards.deck import Deck
 from gamecode.data.file_loader import FileLoader
-from gamecode.gameplay.player import Player
 from gamecode.tiles.cardtile import CardTile
 from gamecode.tiles.gotojail import GoToJail
 from gamecode.tiles.group import load_groups

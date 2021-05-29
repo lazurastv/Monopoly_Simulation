@@ -1,5 +1,6 @@
 class Player:
-    def __init__(self, money=1500, position=0, properties=None, card=False):
+    def __init__(self, id, money=1500, position=0, properties=None, card=False):
+        self.id = id
         self.logic = None
         self.money = money
         self.position = position
@@ -18,7 +19,7 @@ class Player:
         return text
 
     def __deepcopy__(self):
-        copy = Player(self.money, self.position, self.properties, self.jail_card)
+        copy = Player(self.id, self.money, self.position, self.properties, self.jail_card)
         copy.start = self.start
         return copy
 
