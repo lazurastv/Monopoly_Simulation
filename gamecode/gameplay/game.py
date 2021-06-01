@@ -1,5 +1,5 @@
 from ai.human.human_logic import HumanLogic
-from ai.human.manual_logic import ManualLogic
+from ai.manual_logic import ManualLogic
 from gamecode.control.console import Console
 from gamecode.gameplay.players import Players
 from gamecode.gameplay.board import Board
@@ -14,11 +14,13 @@ class Game:
         logic = [ManualLogic(self), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
         self.players.inject_logic(logic)
 
-    def get_groups(self):
+    def get_groups(self, hotels_only=False):
         groups = set()
         for tile in self.board:
             try:
-                groups.add(tile.group)
+                group = tile.group
+                if not hotels_only or (group.name != "utility" and group.name != "railroad"):
+                    groups.add(tile.group)
             except AttributeError:
                 continue
         return groups

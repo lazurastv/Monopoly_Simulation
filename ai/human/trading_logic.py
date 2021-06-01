@@ -1,4 +1,4 @@
-from ai.human.leverage import Leverage
+from ai.human.ownership import Leverage
 
 
 class TradingLogic:
@@ -6,24 +6,19 @@ class TradingLogic:
         self.logic = logic
         n = self.logic.game.get_player_count()
         self.groups = self.logic.game.get_groups()
-        to_remove = []
         for group in self.groups:
             if group.name == "utility" or group.name == "railroad":
-                to_remove.append(group)
-        for group in to_remove:
-            self.groups.remove(group)
-        self.strong_leverage = Leverage(n)
-        self.weak_leverage = Leverage(n)
+                self.groups.remove(group)
+        self.leverage = Leverage(self.groups)
 
     def analyze_leverages(self):
-        to_remove = []
         for group in self.groups:
             if not group.filled():
                 continue
             owners = group.owners()
             n = len(owners)
             if n == 1:
-                to_remove.append(group)
+                self.groups.remove(group)
             elif n == 2:
                 id_1 = owners[0].index
                 id_2 = owners[1].index
@@ -33,8 +28,12 @@ class TradingLogic:
                 id_2 = owners[1].index
                 id_3 = owners[2].index
                 self.weak_leverage.add_many(group, id_1, id_2, id_3)
-        for group in to_remove:
-            self.groups.remove(group)
+
+    def potential_trades(self):
+        return self.strong_leverage_trades()
+
+    def strong_leverage_trades(self):
+
 
 
 # registry of strong and weak leverage

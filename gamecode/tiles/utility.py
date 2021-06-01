@@ -9,12 +9,15 @@ class Utility(Property):
     def card_rent(self):
         self.from_card = True
 
-    def rent(self, dice):
+    def rent(self, dice=None):
         val = self.group.count(self.owner)
+        dice_value = 7
+        if dice is not None:
+            dice_value = dice.value()
         if self.from_card:
             self.from_card = False
-            return dice.value() * 10
+            return dice_value * 10
         elif val == 1:
-            return dice.value() * 4
+            return dice_value * 4
         else:
-            return dice.value() * 10
+            return dice_value * 10

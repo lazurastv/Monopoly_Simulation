@@ -14,7 +14,7 @@ class Hotel(Property):
             addon = ", rent = " + str(self.rent(None))
         return super().__str__() + addon
 
-    def rent(self, dice):
+    def rent(self, dice=None):
         if self.houses == 0 and self.group.full_set(self.owner):
             return self.rents[0] * 2
         else:

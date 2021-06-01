@@ -17,7 +17,7 @@ class Property(Tile):
         if self.owner and player != self.owner and not self.mortgaged and not self.owner.in_jail:
             player.pay(self.rent(dice), self.owner)
 
-    def rent(self, dice):
+    def rent(self, dice=None):
         return 0
 
     def reset(self):

@@ -10,7 +10,7 @@ class Train(Property):
     def card_rent(self):
         self.from_card = True
 
-    def rent(self, dice):
+    def rent(self, dice=None):
         val = self.group.count(self.owner)
         if self.from_card:
             self.from_card = False

@@ -68,4 +68,4 @@ class AuctionLogic:
                 self.logic.run("end")
         else:
             self.target = tile
-            self.max_value = self.max_auction_value() * self.logic.risk_factor * (1 + 2 * random()) / 2
+            self.max_value = self.max_auction_value() * (1 + 2 * self.logic.risk_factor) / 2

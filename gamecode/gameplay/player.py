@@ -1,6 +1,6 @@
 class Player:
-    def __init__(self, id, money=1500, position=0, properties=None, card=False):
-        self.id = id
+    def __init__(self, index, money=1500, position=0, properties=None, card=False):
+        self.id = index
         self.logic = None
         self.money = money
         self.position = position

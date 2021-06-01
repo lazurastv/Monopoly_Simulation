@@ -9,8 +9,11 @@ class Group:
     def __str__(self):
         return str([x.position for x in self.tiles])
 
+    def __iter__(self):
+        return iter(self.tiles)
+
     def count(self, player):
-        owns = [player.has(x) and not x.mortgaged for x in self.tiles]
+        owns = [player.has(x) and not x.mortgaged for x in self]
         return owns.count(True)
 
     def max_ownership(self, players):
@@ -21,7 +24,7 @@ class Group:
 
     def owners(self):
         owner_list = set()
-        for tile in self.tiles:
+        for tile in self:
             if tile.owner is not None:
                 owner_list.add(tile.owner)
         return owner_list
@@ -30,7 +33,7 @@ class Group:
         return self.count(player) == self.total()
 
     def filled(self):
-        for tile in self.tiles:
+        for tile in self:
             if tile.owner is None:
                 return False
         return True
@@ -39,10 +42,22 @@ class Group:
         return self.highest_house() != 0
 
     def highest_house(self):
-        return max([x.houses for x in self.tiles])
+        return max(self.get_house_count())
 
     def lowest_house(self):
-        return min([x.houses for x in self.tiles])
+        return min(self.get_house_count())
+
+    def get_house_count(self):
+        try:
+            return [x.houses for x in self]
+        except AttributeError:
+            return 0
+
+    def total_rent(self):
+        rent_sum = 0
+        for tile in self:
+            rent_sum += tile.rent()
+        return rent_sum
 
 
 def load_groups(board):
