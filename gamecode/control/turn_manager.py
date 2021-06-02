@@ -34,7 +34,8 @@ class TurnManager:
             if not self.get_current_player().positive_balance():
                 self.game.players.kill(self.get_current_player())
             if self.game.get_player_count() == 1:
-                print("We have a winner!")
+                self.game.end(self.get_current_player())
+                return
             self.current_player_id += 1
             self.current_player_id %= self.game.get_player_count()
             self.can_roll = True

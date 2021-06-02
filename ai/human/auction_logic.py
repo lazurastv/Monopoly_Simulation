@@ -1,12 +1,11 @@
-from random import random
-
+from ai.human.sub_logic import SubLogic
 from gamecode.tiles.hotel import Hotel
 from gamecode.tiles.utility import Utility
 
 
-class AuctionLogic:
+class AuctionLogic(SubLogic):
     def __init__(self, logic):
-        self.logic = logic
+        super().__init__(logic)
         self.max_value = None
         self.target = None
 
@@ -63,9 +62,8 @@ class AuctionLogic:
         if tile == self.target:
             val = self.logic.game.console.auction.value + 1
             if val < self.max_value and self.logic.player.has(val):
-                self.logic.run("bet " + str(val))
+                self.run("bet " + str(val))
             else:
-                self.logic.run("end")
+                self.run("end")
         else:
-            self.target = tile
             self.max_value = self.max_auction_value() * (1 + 2 * self.logic.risk_factor) / 2

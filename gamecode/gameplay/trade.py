@@ -15,17 +15,15 @@ class Trade:
 
     def verify(self):
         if self.diff > 0 and not self.player_1.has(self.diff):
-            print()
             raise TradeException(str(self.player_1) + " lacks the necessary funds!")
         elif self.diff < 0 and not self.player_2.has(-self.diff):
             raise TradeException(str(self.player_2) + " lacks the necessary funds!")
-        else:
-            for tile in self.tiles:
-                try:
-                    if tile.owner != self.player_1 and tile.owner != self.player_2:
-                        raise TradeException(str(tile) + " doesn't belong to either player!")
-                except AttributeError:
-                    raise TradeException(str(tile) + " is not tradeable!")
+        for tile in self.tiles:
+            try:
+                if tile.owner != self.player_1 and tile.owner != self.player_2:
+                    raise TradeException(str(tile) + " doesn't belong to either player!")
+            except AttributeError:
+                raise TradeException(str(tile) + " is not tradeable!")
 
     def accept(self):
         self.player_1.pay(self.diff, self.player_2)

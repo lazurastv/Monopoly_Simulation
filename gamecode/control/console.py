@@ -13,6 +13,7 @@ class Console:
         self.tile_mgr = TileManager(game)
         self.auction = Auction(game)
         self.trading = Trading(game)
+        self.running = False
         commands = {
             "roll": self.turn_mgr.roll,
             "next": self.turn_mgr.next,
@@ -51,6 +52,15 @@ class Console:
 
     def current_tile_owned(self):
         return self.turn_mgr.current_tile_owned()
+
+    def start(self):
+        self.running = True
+        while self.running:
+            player = self.get_current_player()
+            player.play()
+
+    def end(self):
+        self.running = False
 
     def run(self, text):
         if self.trade_loaded():

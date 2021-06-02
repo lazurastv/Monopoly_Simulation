@@ -1,6 +1,10 @@
 from gamecode.tiles.property import Property
 
 
+class HouseError(Exception):
+    pass
+
+
 class Hotel(Property):
     def __init__(self, pos, price, mortgage, house_price, rents):
         super().__init__(pos, price, mortgage)
@@ -27,6 +31,9 @@ class Hotel(Property):
     def has_hotel(self):
         return self.houses == 5
 
+    def group_owned(self):
+        return self.group.full_set(self.owner)
+
     def take_mortgage(self, player):
         if self.group.has_houses():
             print("You can't take a mortgage on an improved group!")
@@ -35,26 +42,26 @@ class Hotel(Property):
 
     def buy_house(self, player):
         if player != self.owner:
-            print("You are not the owner!")
-        elif not self.group.full_set(self.owner):
-            print("You don't own the group!")
+            raise HouseError("You are not the owner!")
+        elif not self.group_owned():
+            raise HouseError("You don't own the group!")
         elif not self.owner.has(self.house_price):
-            print("You can't afford a house! Costs $", self.house_price)
+            raise HouseError("You can't afford a house! Costs $", self.house_price)
         elif self.houses == 5:
-            print("A hotel has already been built!")
+            raise HouseError("A hotel has already been built!")
         elif self.houses > self.group.lowest_house():
-            print("Houses must be built equally!")
+            raise HouseError("Houses must be built equally!")
         else:
             self.houses += 1
             self.owner.pay(self.house_price)
 
     def sell_house(self, player):
         if player != self.owner:
-            print("You are not the owner!")
+            raise HouseError("You are not the owner!")
         elif self.houses == 0:
-            print("No houses are built here!")
+            raise HouseError("No houses are built here!")
         elif self.houses < self.group.highest_house():
-            print("Houses must be sold equally!")
+            raise HouseError("Houses must be sold equally!")
         else:
             self.houses -= 1
             self.owner.earn(self.house_price // 2)
