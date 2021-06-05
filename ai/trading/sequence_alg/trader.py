@@ -1,108 +1,121 @@
 from copy import deepcopy
 
 
+def remove_connection(next_graph_copy, source, node):
+    if len(next_graph_copy[source]) > 1:
+        next_graph_copy[source].pop(node)
+    else:
+        next_graph_copy.pop(source)
+
+
+def inherit(graph, target, giver, gift):
+    tiles = graph[gift].pop(giver)
+    if target == gift:
+        return
+    try:
+        for tile in tiles:
+            graph[gift][target].append(tile)
+    except KeyError:
+        try:
+            graph[gift][target] = tiles
+        except KeyError:
+            graph[gift] = {target: tiles}
+
+
 class Trader:
     def __init__(self, groups, player_count):
         self.groups = groups
         self.player_count = player_count
-        self.nodes = []
-        self.positions = []
+        self.valid_solutions = []
+        self.graphs = []
+        self.trades = []
 
-    def solve_for(self, player):
-        self.get_valid_positions([player], self.groups, {})
+    def solve_for(self, target):
+        self.get_valid_solutions([target], self.groups, {})
+        self.valid_solutions.sort(key=len)
+        for graph in self.valid_solutions:
+            constructed_solution = self.construct_solution(graph, target)
+            if constructed_solution is not None:
+                for player in constructed_solution:
+                    if self.construct_solution(graph, player) is None:
+                        return None
+                return constructed_solution
 
-    def get_valid_positions(self, players, groups, nodes, index=0):
-        if len(players) == self.player_count:
+    def get_valid_solutions(self, players, groups, valid_solution, index=0):
+        if len(players) >= self.player_count:
             return
         target = players[index]
         for group in groups:
             groups_copy = groups.copy()
             groups_copy.remove(group)
             players_copy = players.copy()
-            nodes_copy = nodes.copy()
+            valid_solution_copy = valid_solution.copy()
             for tile, player in group:
                 if player != target:
-                    if target not in nodes_copy:
-                        nodes_copy[target] = {player: [tile]}
-                    elif player not in nodes_copy[target]:
-                        nodes_copy[target][player] = [tile]
+                    if target not in valid_solution_copy:
+                        valid_solution_copy[target] = {player: [tile]}
+                    elif player not in valid_solution_copy[target]:
+                        valid_solution_copy[target][player] = [tile]
                     else:
-                        nodes_copy[target][player].append(tile)
+                        valid_solution_copy[target][player].append(tile)
                     if player not in players_copy:
                         players_copy.append(player)
             if index + 1 == len(players_copy):
-                self.nodes.append(nodes_copy)
+                self.valid_solutions.append(valid_solution_copy)
             else:
-                self.get_valid_positions(players_copy, groups_copy, nodes_copy, index + 1)
+                self.get_valid_solutions(players_copy, groups_copy, valid_solution_copy, index + 1)
 
-    def walk(self, source, dest, nodes, next_graph):
-        nodes_copy = deepcopy(nodes)
-        current_node = nodes_copy.pop(source)
+    def add_solution(self, source, node, final_graph_copy):
+        current_tiles = final_graph_copy[source][node].copy()
+        if final_graph_copy not in self.graphs:
+            self.graphs.append(final_graph_copy)
+        if (source, current_tiles) not in self.trades:
+            self.trades.append((source, current_tiles))
+
+    def walk(self, start, source, dest, graph, final_graph, exclude=-1):
+        graph_copy = deepcopy(graph)
+        current_node = graph_copy.pop(source)
         for node in current_node:
-            if node in nodes_copy:
-                next_graph_copy = deepcopy(next_graph)
-                if len(next_graph_copy[source]) > 1:
-                    next_graph_copy[source].pop(node)
-                else:
-                    next_graph_copy.pop(source)
+            final_graph_copy = deepcopy(final_graph)
+            if node != exclude and (node in graph_copy or node == dest):
                 if node == dest:
-                    self.positions.append([source, current_node[node], next_graph_copy])
+                    self.add_solution(source, node, final_graph_copy)
                 else:
-                    self.walk(node, dest, nodes_copy, next_graph_copy)
+                    remove_connection(final_graph_copy, source, node)
+                    self.walk(start, node, dest, graph_copy, final_graph_copy, exclude)
 
-    def consider_position(self, position, player):
-        bars = []
-        for bar in position[player]:
-            bars.append(bar)
-        positions = [0, 0, position]
-        while len(bars) > 0:
-            bar = bars.pop()
-            for _, _, pos in positions:
-                self.walk(bar, player, pos, pos)
-                for posit in self.positions:
-                    last_node = posit[0]
-                    tiles = position[last_node][player]
-                    try:
-                        posit[2][bar][last_node].append(*tiles)
-                    except KeyError:
-                        posit[2][bar][last_node] = tiles
+    def construct_solution(self, true_graph, player):
+        graph = deepcopy(true_graph)
+        bars = graph.pop(player)
+        graphs = [graph]
+        trades = {}
+        for bar in bars:
+            trades[bar] = [bars[bar]]
+            self.trades = []
+            self.graphs = []
+            for pos in graphs:
+                self.walk(bar, bar, player, pos, pos)
+                for source, tiles in self.trades:
+                    trades[bar].append(tiles)
+                self.trades = []
+                for not_bar in bars:
+                    if bar != not_bar:
+                        self.walk(not_bar, not_bar, player, pos, pos, bar)
+                for source, tiles in self.trades:
+                    if tiles in trades[bar]:
+                        trades[bar].remove(tiles)
+                for source, tiles in self.trades:
+                    inherit(pos, bar, player, source)
+            graphs = deepcopy(self.graphs)
+            if len(graphs) == 0:
+                return None
+        return trades
 
 
-example = [[(0, 0), (1, 0), (2, 2)], [(3, 1), (4, 1), (5, 2)], [(6, 0), (7, 1), (8, 2)], [(9, 0), (10, 1), (11, 0)]]
-solver = Trader(example, 4)
-solver.solve_for(0)
-solution = solver.nodes[0]
-print(solution)
-solver.walk(0, 1, solution, solution.copy())
-print(solver.positions)
-
-"""
-
-    def find_trade(self, source, visited, groups, trades):
-        if len(visited) == self.player_count:
-            return
-        for group in groups:
-            groups_copy = groups.copy()
-            groups_copy.remove(group)
-            trades_copy = trades.copy()
-            for tile, player in group:
-                if source == self.start and player != self.start:
-                    try:
-                        trades_copy[player].insert(tile, 0)
-                    except KeyError:
-                        trades_copy[player] = [tile, "<->"]
-                elif source != self.start and player == self.start:
-                    trades_copy.append(tile)
-                elif player != source:
-                    visited_copy = visited.copy()
-                    visited_copy.append(player)
-                    self.find_trade(player, visited_copy, groups_copy, trades_copy[player])
-            if isinstance(trades_copy, dict):
-                for player in trades_copy:
-                    visited_copy = visited.copy()
-                    visited_copy.append(player)
-                    self.find_trade(player, visited_copy, groups_copy, trades_copy[player])
-                if trades_copy[source][-1] != "<->":
-                    self.trades.append(trades_copy)
-
-"""
+example = [[(0, 0), (1, 0), (2, 2)],
+           [(3, 1), (4, 1), (5, 2)],
+           [(6, 3), (7, 2), (8, 4)],
+           [(9, 3), (10, 0), (11, 4)],
+           [(12, 3), (13, 0), (14, 4)]]
+solver = Trader(example, 5)
+print(solver.solve_for(3))
