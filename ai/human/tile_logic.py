@@ -1,4 +1,5 @@
 from ai.human.sub_logic import SubLogic
+from gamecode.control.tile_manager import NotImprovableError
 from gamecode.tiles.hotel import HouseError, Hotel
 from gamecode.tiles.property import MortgageError
 
@@ -26,17 +27,19 @@ class TileLogic(SubLogic):
         for tile in group:
             if tile.mortgaged:
                 self.run("repay " + str(tile.position))
-        failed = [False for _ in group]
-        while False in failed:
+        failed = False
+        while not failed:
+            failed = True
             for i, tile in enumerate(group):
                 try:
                     self.run("build " + str(tile.position))
-                    failed[i] = False
+                    failed = False
                 except HouseError:
-                    failed[i] = True
-        for tile in group:
-            if tile.houses != 5:
-                raise HouseError
+                    continue
+                except NotImprovableError:
+                    return
+        if group.lowest_house() != 5:
+            raise HouseError
 
     def repay_mortgages(self, properties):
         for tile in properties:

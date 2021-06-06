@@ -1,4 +1,4 @@
-from gamecode.control.parser import Parser
+from gamecode.control.parser import Parser, ParserError
 from gamecode.gameplay.trade import Trade, TradeError
 
 
@@ -14,7 +14,10 @@ class Trading:
         self.parser = Parser(commands)
 
     def run(self, text):
-        self.parser.parse_input(text)
+        try:
+            self.parser.parse_input(text)
+        except ParserError:
+            raise TradeError
 
     def trade_loaded(self):
         return self.trade is not None

@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from gamecode.control.parser import Parser
+from gamecode.control.parser import Parser, ParserError
 
 
 class AuctionError(Exception):
@@ -26,14 +26,17 @@ class Auction:
             raise AuctionError("Tile cannot be auctioned!")
         else:
             self.value = 0
-            self.players = deepcopy(self.game.players)
+            self.players = self.game.players.__deepcopy__()
             self.current_player_id = self.game.console.turn_mgr.current_player_id
             self.running = True
             while self.running:
                 self.get_current_player().play()
 
     def run(self, text):
-        self.parser.parse_input(text)
+        try:
+            self.parser.parse_input(text)
+        except ParserError:
+            raise AuctionError
         if self.players.count() == 1:
             self.finish()
 

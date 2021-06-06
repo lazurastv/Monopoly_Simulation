@@ -1,4 +1,5 @@
 from ai.human.sub_logic import SubLogic
+from gamecode.control.tile_manager import NotImprovableError
 from gamecode.tiles.hotel import HouseError
 
 
@@ -56,6 +57,8 @@ class MortgageLogic(SubLogic):
                     break
                 except HouseError:
                     continue
+                except NotImprovableError:
+                    return
 
     def keep_alive(self):
         self.load_properties()

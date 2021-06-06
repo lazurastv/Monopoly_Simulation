@@ -12,7 +12,7 @@ def parse(player_input):
     return command, args
 
 
-class WrongCommandError(Exception):
+class ParserError(Exception):
     pass
 
 
@@ -23,17 +23,13 @@ class Parser:
 
     def parse_input(self, text):
         command, args = parse(text)
-        try:
-            return self.run(command, args)
-        except WrongCommandError:
-            print("Wrong command!")
-        except TypeError or ValueError:
-            print("Wrong arguments!")
+        return self.run(command, args)
 
     def run(self, command, args):
-        if command not in self.commands:
-            raise WrongCommandError
-        self.commands[command](*args)
+        try:
+            self.commands[command](*args)
+        except (KeyError, TypeError, ValueError):
+            raise ParserError
 
     def help(self):
         print(*self.commands.keys())

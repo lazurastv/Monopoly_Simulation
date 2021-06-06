@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from gamecode.gameplay.player import Player
 
 
@@ -13,6 +15,11 @@ class Players:
 
     def __iter__(self):
         return iter(self.players)
+
+    def __deepcopy__(self):
+        players_copy = Players(0, 0)
+        players_copy.players = self.players.copy()
+        return players_copy
 
     def inject_logic(self, logic):
         for i in range(self.count()):

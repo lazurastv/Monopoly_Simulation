@@ -2,8 +2,19 @@ from gamecode.control.jail_manager import JailManager
 from gamecode.gameplay.dice import Dice
 
 
-class TurnError(Exception):
-    pass
+class MustRollError(Exception):
+    def __init__(self):
+        super().__init__("You must roll the dice before ending your turn!")
+
+
+class NoThrowsLeftError(Exception):
+    def __init__(self):
+        super().__init__("You have no more throws left!")
+
+
+class TileNotOwnedError(Exception):
+    def __init__(self):
+        super().__init__("The current tile must have an owner!")
 
 
 class TurnManager:
@@ -16,9 +27,9 @@ class TurnManager:
 
     def roll(self):
         if not self.can_roll:
-            raise TurnError("No more throws left this turn!")
+            raise NoThrowsLeftError
         elif not self.current_tile_owned():
-            raise TurnError("You need to buy or auction the tile first!")
+            raise TileNotOwnedError
         else:
             self.dice.roll()
             current_player = self.get_current_player()
@@ -31,9 +42,9 @@ class TurnManager:
 
     def next(self):
         if self.can_roll:
-            raise TurnError("You must roll first!")
+            raise MustRollError
         elif not self.current_tile_owned():
-            raise TurnError("You must either auction or buy this tile!")
+            raise TileNotOwnedError
         else:
             if not self.get_current_player().positive_balance():
                 self.game.players.kill(self.get_current_player())

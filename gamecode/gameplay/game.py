@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from ai.human.human_logic import HumanLogic
 from gamecode.control.console import Console
 from gamecode.gameplay.players import Players
@@ -12,6 +14,12 @@ class Game:
         self.players = Players(start_money, player_count)
         logic = [HumanLogic(self, 0), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
         self.players.inject_logic(logic)
+
+    def __deepcopy__(self, memodict=None):
+        if memodict is None:
+            memodict = {}
+        game_copy = Game()
+        game_copy.players = deepcopy(self.players)
 
     def get_groups(self, hotels_only=False):
         groups = set()
@@ -40,6 +48,5 @@ class Game:
         self.console.start()
 
     def end(self, player):
-        print("Game ended! Player " + player.id + " has won!")
-        raise Exception
-        # self.console.end()
+        print("Game ended! Player " + str(player.id) + " has won!")
+        self.console.end()
