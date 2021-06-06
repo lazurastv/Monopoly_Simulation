@@ -1,4 +1,4 @@
-from gamecode.tiles.property import Property
+from gamecode.tiles.property import Property, MortgageError
 
 
 class HouseError(Exception):
@@ -24,6 +24,16 @@ class Hotel(Property):
         else:
             return self.rents[self.houses]
 
+    def rent_change(self):
+        self.houses += 1
+        dfx = 0
+        try:
+            dfx = self.rent()
+        except IndexError:
+            pass
+        self.houses -= 1
+        return dfx
+
     def reset(self):
         super().reset()
         self.houses = 0
@@ -36,7 +46,7 @@ class Hotel(Property):
 
     def take_mortgage(self, player):
         if self.group.has_houses():
-            print("You can't take a mortgage on an improved group!")
+            raise MortgageError("You can't take a mortgage on an improved group!")
         else:
             super().take_mortgage(player)
 

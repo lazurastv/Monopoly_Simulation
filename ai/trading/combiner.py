@@ -1,5 +1,5 @@
 from copy import deepcopy
-from ai.trading.sequence_alg.graph import Graph
+from ai.trading.graph import Graph
 
 
 def complete_group_with(group, target, valid_solution, partners):
@@ -14,7 +14,7 @@ def has_next(index, partners):
 
 
 class Combiner:
-    def __init__(self, player_count, groups):
+    def __init__(self, groups, player_count):
         self.max_count = player_count
         self.groups = groups
         self.graphs = []

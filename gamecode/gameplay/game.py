@@ -11,7 +11,7 @@ class Game:
         self.board = Board(self)
         self.console = Console(self)
         self.players = Players(start_money, player_count)
-        logic = [ManualLogic(self), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
+        logic = [HumanLogic(self, 0), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
         self.players.inject_logic(logic)
 
     def get_groups(self, hotels_only=False):

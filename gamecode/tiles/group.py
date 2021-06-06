@@ -38,6 +38,9 @@ class Group:
                 return False
         return True
 
+    def owned(self):
+        return len(self.owners()) == 1
+
     def has_houses(self):
         return self.highest_house() != 0
 
@@ -51,13 +54,20 @@ class Group:
         try:
             return [x.houses for x in self]
         except AttributeError:
-            return 0
+            return [0]
 
     def total_rent(self):
         rent_sum = 0
         for tile in self:
             rent_sum += tile.rent()
         return rent_sum
+
+    def rent_derivative(self):
+        cost = self.tiles[0].house_price
+        for tile in self:
+            if tile.mortgaged:
+                cost += tile.mortgage_pay_cost()
+        return max([x.rent_change() for x in self]) / cost
 
 
 def load_groups(board):

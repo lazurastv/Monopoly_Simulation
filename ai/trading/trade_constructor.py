@@ -1,4 +1,4 @@
-from ai.trading.sequence_alg.walker import Walker
+from ai.trading.walker import Walker
 
 
 def add_graphs(next_graphs, source):

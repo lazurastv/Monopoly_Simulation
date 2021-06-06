@@ -1,4 +1,4 @@
-from ai.trading.sequence_alg.node import Node
+from ai.trading.node import Node
 
 
 class Graph:

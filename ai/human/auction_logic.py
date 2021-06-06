@@ -58,12 +58,13 @@ class AuctionLogic(SubLogic):
         elif mine == 0:
             return self.target.price / 2
 
-    def auction(self, tile):
-        if tile == self.target:
+    def auction(self):
+        if self.get_current_tile().position == self.target:
             val = self.logic.game.console.auction.value + 1
             if val < self.max_value and self.logic.player.has(val):
                 self.run("bet " + str(val))
             else:
                 self.run("end")
         else:
+            self.target = self.get_current_tile().position
             self.max_value = self.max_auction_value() * (1 + 2 * self.logic.risk_factor) / 2

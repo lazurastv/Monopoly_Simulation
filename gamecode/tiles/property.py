@@ -1,6 +1,10 @@
 from gamecode.tiles.tile import Tile
 
 
+class MortgageError(Exception):
+    pass
+
+
 class Property(Tile):
     def __init__(self, pos, price, mortgage, group=None, mortgaged=False, owner=None):
         super().__init__(pos)
@@ -46,21 +50,24 @@ class Property(Tile):
 
     def take_mortgage(self, player):
         if player != self.owner:
-            print("You are not the owner!")
+            raise MortgageError("You are not the owner!")
         elif self.mortgaged:
-            print("Property is already mortgaged!")
+            raise MortgageError("Property is already mortgaged!")
         else:
             self.owner.earn(self.mortgage)
             self.mortgaged = True
 
+    def mortgage_pay_cost(self):
+        return int(self.mortgage * 1.1)
+
     def pay_mortgage(self, player):
-        amount = self.mortgage * 1.1
+        amount = self.mortgage_pay_cost()
         if player != self.owner:
-            print("You are not the owner!")
+            raise MortgageError("You are not the owner!")
         elif not self.mortgaged:
-            print("Property isn't mortgaged!")
+            raise MortgageError("Property isn't mortgaged!")
         elif not self.owner.has(amount):
-            print("You don't have the money to pay the mortgage!")
+            raise MortgageError("You don't have the money to pay the mortgage!")
         else:
             self.owner.pay(amount)
             self.mortgaged = False

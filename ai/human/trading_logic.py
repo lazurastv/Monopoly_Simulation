@@ -1,46 +1,16 @@
-from ai.human.ownership import Leverage
+from ai.human.sub_logic import SubLogic
+from ai.trading.communicator import Communicator
 
 
-class TradingLogic:
+class TradingLogic(SubLogic):
     def __init__(self, logic):
+        super().__init__(logic)
         self.logic = logic
-        n = self.logic.game.get_player_count()
-        self.groups = self.logic.game.get_groups()
-        for group in self.groups:
-            if group.name == "utility" or group.name == "railroad":
-                self.groups.remove(group)
-        self.leverage = Leverage(self.groups)
+        self.communicator = Communicator(logic.player.id, logic.game)
 
-    def analyze_leverages(self):
-        for group in self.groups:
-            if not group.filled():
-                continue
-            owners = group.owners()
-            n = len(owners)
-            if n == 1:
-                self.groups.remove(group)
-            elif n == 2:
-                id_1 = owners[0].index
-                id_2 = owners[1].index
-                self.strong_leverage.add(group, id_1, id_2)
-            else:
-                id_1 = owners[0].index
-                id_2 = owners[1].index
-                id_3 = owners[2].index
-                self.weak_leverage.add_many(group, id_1, id_2, id_3)
-
-    def potential_trades(self):
-        return self.strong_leverage_trades()
-
-    def strong_leverage_trades(self):
-
-
-
-# registry of strong and weak leverage
-# 0,2 - 2 leverage is an instant exchange (with money aiming to equalize their income and development
-# 0,2,3 and 1,2,3 can translate to 0,2,2 and 1,3,3, so 0,2 and 1,3 strong leverage
-# money calculation: we trade a group which makes 150 at start for a group with 400 at start.
-# we trade enough money to build house to equalize this income. Note that growth is also different, so
-# we must account for different growth. 150 to 225, while 450 to 600 is both one house each, but more difference.
-# Assuming each tile is equally likely, we should also give the difference to the worse side to account
-# for the loss. This difference should be given as many times, as the tiles are visited on average per game.
+    def trade(self):
+        commands = self.communicator.get_trade()
+        if commands is None:
+            return
+        for command in commands:
+            self.run(command)
