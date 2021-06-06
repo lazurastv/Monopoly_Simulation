@@ -1,5 +1,5 @@
-from ai.human.house_destroyer import HouseDestroyer
 from ai.human.sub_logic import SubLogic
+from gamecode.tiles.hotel import HouseError
 
 
 class MortgageLogic(SubLogic):
@@ -9,11 +9,15 @@ class MortgageLogic(SubLogic):
         self.groups = []
 
     def load_properties(self):
+        self.single_tiles = []
+        self.groups = []
+        player = self.get_player()
         properties = self.get_properties()
         for tile in properties:
             group = tile.group
-            if group.has_houses():
-                self.groups.append(group)
+            if group.owned_by(player):
+                if group not in self.groups:
+                    self.groups.append(group)
             elif not tile.mortgaged:
                 self.single_tiles.append(tile)
         self.single_tiles.sort(key=lambda x: x.rent())
@@ -41,23 +45,27 @@ class MortgageLogic(SubLogic):
         player = self.get_player()
         return not player.positive_balance()
 
-    def get_properties(self):
-        player = self.get_player()
-        return player.properties
+    def sell_all_houses(self, group):
+        failed = False
+        while self.in_debt() and not failed:
+            failed = True
+            for tile in group:
+                try:
+                    self.run("destroy " + str(tile.position))
+                    failed = False
+                    break
+                except HouseError:
+                    continue
 
     def keep_alive(self):
-        house_destroyer = HouseDestroyer()
         self.load_properties()
         while self.in_debt():
             if self.has_single_tile():
                 self.mortgage_single_tile()
             elif self.has_houses():
                 group = self.groups[0]
-                house_destroyer.load_group(group)
-                if house_destroyer.has_houses():
-                    target = house_destroyer.next_house()
-                    self.destroy_house(target)
-                else:
+                self.sell_all_houses(group)
+                if not group.has_houses():
                     self.destroy_current_group()
             else:
                 return

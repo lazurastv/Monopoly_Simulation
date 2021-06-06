@@ -13,7 +13,7 @@ class Player:
         self.in_jail = False
 
     def __str__(self):
-        text = str(self.money) + ", at " + str(self.position) + ", owns: "
+        text = str(self.id) + ", " + str(self.money) + ", at " + str(self.position) + ", owns: "
         for tile in self.properties:
             text += str(tile.position) + ", "
         return text

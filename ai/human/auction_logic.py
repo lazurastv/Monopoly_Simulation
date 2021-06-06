@@ -21,7 +21,7 @@ class AuctionLogic(SubLogic):
         group = self.target.group
         max_owned = group.max_ownership(self.logic.game.players)
         mine = group.count(self.logic.player)
-        total = group.total()
+        total = len(group)
         ratio = (mine, total)
         worst = (max_owned, total)
         if ratio == (2, 3) or ratio == (1, 2):
@@ -59,12 +59,12 @@ class AuctionLogic(SubLogic):
             return self.target.price / 2
 
     def auction(self):
-        if self.get_current_tile().position == self.target:
+        if self.get_current_tile() is self.target:
             val = self.logic.game.console.auction.value + 1
             if val < self.max_value and self.logic.player.has(val):
                 self.run("bet " + str(val))
             else:
                 self.run("end")
         else:
-            self.target = self.get_current_tile().position
+            self.target = self.get_current_tile()
             self.max_value = self.max_auction_value() * (1 + 2 * self.logic.risk_factor) / 2

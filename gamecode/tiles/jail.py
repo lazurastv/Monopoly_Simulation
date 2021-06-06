@@ -1,6 +1,10 @@
 from gamecode.tiles.tile import Tile
 
 
+class JailError(Exception):
+    pass
+
+
 class Jail(Tile):
     fee = 50
 
@@ -29,18 +33,18 @@ class Jail(Tile):
 
     def buy_out(self, player):
         if not player.in_jail:
-            print("You are not in jail!")
+            raise JailError("You are not in jail!")
         elif not player.has(Jail.fee):
-            print("You don't have enough money for a buy out!")
+            raise JailError("You don't have enough money for a buy out!")
         else:
             player.pay(Jail.fee)
             self.remove_from_jail(player)
 
     def use_jail_card(self, player):
         if player not in self:
-            print("You are not in jail!")
+            raise JailError("You are not in jail!")
         elif not player.has_jail_card():
-            print("You don't have a jail card!")
+            raise JailError("You don't have a jail card!")
         else:
             player.use_jail_card()
             self.remove_from_jail(player)

@@ -10,6 +10,8 @@ class Utility(Property):
         self.from_card = True
 
     def rent(self, dice=None):
+        if self.owner is None:
+            return 0
         val = self.group.count(self.owner)
         dice_value = 7
         if dice is not None:

@@ -1,6 +1,10 @@
 from gamecode.gameplay.player import Player
 
 
+class PlayersError(Exception):
+    pass
+
+
 class Players:
     def __init__(self, starting_money, amount):
         self.players = []
@@ -9,11 +13,6 @@ class Players:
 
     def __iter__(self):
         return iter(self.players)
-
-    def __deepcopy__(self):
-        copy = Players(0, 0)
-        copy.players = self.players.copy()
-        return copy
 
     def inject_logic(self, logic):
         for i in range(self.count()):
@@ -33,7 +32,7 @@ class Players:
         try:
             return self.players[index]
         except IndexError:
-            print("Player doesn't exist!")
+            raise PlayersError("Player doesn't exist!")
 
     def count(self):
         return len(self.players)

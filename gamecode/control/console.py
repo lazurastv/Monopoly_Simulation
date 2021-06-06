@@ -63,6 +63,7 @@ class Console:
         self.running = False
 
     def run(self, text):
+        print(text)
         if self.trade_loaded():
             self.trading.run(text)
         elif self.auction_running():

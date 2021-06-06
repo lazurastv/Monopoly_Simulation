@@ -1,5 +1,5 @@
 from gamecode.control.parser import Parser
-from gamecode.gameplay.trade import Trade, TradeException
+from gamecode.gameplay.trade import Trade, TradeError
 
 
 class Trading:
@@ -26,16 +26,12 @@ class Trading:
         player_1 = self.game.console.get_current_player()
         player_2 = self.game.players.get(player)
         if player_1 == player_2:
-            print("You cannot trade with yourself!")
-            return
+            raise TradeError("You cannot trade with yourself!")
         if len(tiles) == 0:
-            print("You cannot give money away for free!")
-            return
+            raise TradeError("You cannot give money away for free!")
         tiles = [self.int_to_tile(x) for x in tiles]
         try:
             self.trade = Trade(player_1, player_2, diff, tiles)
-        except TradeException as t:
-            print(t)
         except ValueError:
             print("Wrong arguments!")
         while self.trade_loaded():
@@ -46,11 +42,11 @@ class Trading:
             self.trade.accept()
             self.trade = None
         except AttributeError:
-            print("No trade loaded!")
+            raise TradeError("No trade loaded!")
 
     def refuse(self):
         if self.trade is None:
-            print("No trade loaded!")
+            raise TradeError("No trade loaded!")
         self.trade = None
 
     def info(self):

@@ -1,4 +1,10 @@
+from copy import deepcopy
+
 from gamecode.control.parser import Parser
+
+
+class AuctionError(Exception):
+    pass
 
 
 class Auction:
@@ -17,10 +23,10 @@ class Auction:
 
     def start(self):
         if self.game.console.current_tile_owned():
-            print("Tile cannot be auctioned!")
+            raise AuctionError("Tile cannot be auctioned!")
         else:
             self.value = 0
-            self.players = self.game.players.__deepcopy__()
+            self.players = deepcopy(self.game.players)
             self.current_player_id = self.game.console.turn_mgr.current_player_id
             self.running = True
             while self.running:
@@ -38,9 +44,9 @@ class Auction:
     def bet(self, amount):
         player = self.get_current_player()
         if self.value >= amount:
-            print("Bet must be greater than current bet!")
+            raise AuctionError("Bet must be greater than current bet!")
         elif not player.has(amount):
-            print("You don't have this much!")
+            raise AuctionError("You don't have this much!")
         else:
             self.value = amount
             self.next()

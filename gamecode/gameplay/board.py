@@ -11,6 +11,10 @@ from gamecode.tiles.tax import Tax
 from gamecode.tiles.tile import Tile
 
 
+class BoardError(Exception):
+    pass
+
+
 class Board:
     def __init__(self, game):
         self.tiles = list(range(40))
@@ -62,13 +66,13 @@ class Board:
         except TypeError:
             return self.tiles[self.index_of(item)]
         except IndexError:
-            print("Such a tile does not exist!")
+            raise BoardError("Such a tile does not exist!")
 
     def index_of(self, name):
         try:
             return self.tile_mapping[name]
         except KeyError:
-            print("Such a tile does not exist!")
+            raise BoardError("Such a tile does not exist!")
 
     def get_nearest(self, player, datatype):
         index = player.position

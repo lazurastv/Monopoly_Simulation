@@ -19,7 +19,9 @@ class Hotel(Property):
         return super().__str__() + addon
 
     def rent(self, dice=None):
-        if self.houses == 0 and self.group.full_set(self.owner):
+        if self.owner is None:
+            return 0
+        elif self.houses == 0 and self.group.owned_by(self.owner):
             return self.rents[0] * 2
         else:
             return self.rents[self.houses]
@@ -42,7 +44,7 @@ class Hotel(Property):
         return self.houses == 5
 
     def group_owned(self):
-        return self.group.full_set(self.owner)
+        return self.group.owned_by(self.owner)
 
     def take_mortgage(self, player):
         if self.group.has_houses():

@@ -11,6 +11,8 @@ class Train(Property):
         self.from_card = True
 
     def rent(self, dice=None):
+        if self.owner is None:
+            return 0
         val = self.group.count(self.owner)
         if self.from_card:
             self.from_card = False

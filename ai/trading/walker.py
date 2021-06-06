@@ -18,7 +18,7 @@ class Walker:
         for trade in self.trades:
             try:
                 trades.remove(trade)
-            except KeyError:
+            except (KeyError, ValueError):
                 continue
         self.trades = []
         for source, trade in trades:

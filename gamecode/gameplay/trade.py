@@ -1,4 +1,4 @@
-class TradeException(Exception):
+class TradeError(Exception):
     pass
 
 
@@ -11,19 +11,20 @@ class Trade:
         self.verify()
 
     def __str__(self):
-        return str(self.diff) + " " + str(*[x.position for x in self.tiles])
+        return str(self.player_1.id) + " " + str(self.player_2.id) +\
+               " " + str(self.diff) + " " + str([x.position for x in self.tiles])
 
     def verify(self):
         if self.diff > 0 and not self.player_1.has(self.diff):
-            raise TradeException(str(self.player_1) + " lacks the necessary funds!")
+            raise TradeError(str(self.player_1) + " lacks the necessary funds!")
         elif self.diff < 0 and not self.player_2.has(-self.diff):
-            raise TradeException(str(self.player_2) + " lacks the necessary funds!")
+            raise TradeError(str(self.player_2) + " lacks the necessary funds!")
         for tile in self.tiles:
             try:
                 if tile.owner != self.player_1 and tile.owner != self.player_2:
-                    raise TradeException(str(tile) + " doesn't belong to either player!")
+                    raise TradeError(str(tile) + " doesn't belong to either player!")
             except AttributeError:
-                raise TradeException(str(tile) + " is not tradeable!")
+                raise TradeError(str(tile) + " is not tradeable!")
 
     def accept(self):
         self.player_1.pay(self.diff, self.player_2)

@@ -1,3 +1,7 @@
+class TileError(Exception):
+    pass
+
+
 class TileManager:
     def __init__(self, game):
         self.game = game
@@ -17,7 +21,7 @@ class TileManager:
             current_player = self.get_current_player()
             current_tile.buy(current_player)
         except AttributeError:
-            print("Tile is not a property!")
+            raise TileError("Tile is not a property!")
 
     def buy_house(self, tile):
         try:
@@ -25,7 +29,7 @@ class TileManager:
             tile = self.int_to_tile(tile)
             tile.buy_house(current_player)
         except AttributeError:
-            print("Tile is not an improvable tile!")
+            raise TileError("Tile is not an improvable tile!")
 
     def sell_house(self, tile):
         try:
@@ -33,7 +37,7 @@ class TileManager:
             tile = self.int_to_tile(tile)
             tile.sell_house(current_player)
         except AttributeError:
-            print("Tile is not an improvable tile!")
+            raise TileError("Tile is not an improvable tile!")
 
     def mortgage(self, tile):
         try:
@@ -41,7 +45,7 @@ class TileManager:
             tile = self.int_to_tile(tile)
             tile.take_mortgage(current_player)
         except AttributeError:
-            print("Tile is not a property!")
+            raise TileError("Tile is not a property!")
 
     def repay(self, tile):
         try:
@@ -49,4 +53,4 @@ class TileManager:
             tile = self.int_to_tile(tile)
             tile.pay_mortgage(current_player)
         except AttributeError:
-            print("Tile is not a property!")
+            raise TileError("Tile is not a property!")

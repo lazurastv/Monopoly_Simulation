@@ -10,8 +10,10 @@ class TileLogic(SubLogic):
     def build_hotels(self, properties):
         groups = []
         remove = []
+        player = self.get_player()
         for tile in properties:
-            if isinstance(tile, Hotel) and tile.group not in groups:
+            if isinstance(tile, Hotel) and tile.group not in groups \
+                    and tile.group.owned_by(player) and tile.group.lowest_house() < 5:
                 groups.append(tile.group)
                 remove.append(tile)
         for tile in remove:
@@ -42,8 +44,7 @@ class TileLogic(SubLogic):
                 self.run("repay " + str(tile.position))
 
     def manage_tiles(self):
-        player = self.get_player()
-        properties = player.properties.copy()
+        properties = self.get_properties().copy()
         try:
             self.build_hotels(properties)
             self.repay_mortgages(properties)

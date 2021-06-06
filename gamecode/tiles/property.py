@@ -5,6 +5,14 @@ class MortgageError(Exception):
     pass
 
 
+class MoneyError(Exception):
+    pass
+
+
+class OwnedError(Exception):
+    pass
+
+
 class Property(Tile):
     def __init__(self, pos, price, mortgage, group=None, mortgaged=False, owner=None):
         super().__init__(pos)
@@ -41,9 +49,9 @@ class Property(Tile):
         if price is None:
             price = self.price
         if self.owned():
-            print("Tile already has owner!")
+            raise OwnedError("Tile already has owner!")
         elif not player.has(price):
-            print("Not enough money to purchase!")
+            raise MoneyError("Not enough money to purchase!")
         else:
             player.pay(price)
             self.change_owner(player)

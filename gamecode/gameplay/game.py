@@ -1,5 +1,4 @@
 from ai.human.human_logic import HumanLogic
-from ai.manual_logic import ManualLogic
 from gamecode.control.console import Console
 from gamecode.gameplay.players import Players
 from gamecode.gameplay.board import Board
@@ -39,3 +38,8 @@ class Game:
 
     def start(self):
         self.console.start()
+
+    def end(self, player):
+        print("Game ended! Player " + player.id + " has won!")
+        raise Exception
+        # self.console.end()

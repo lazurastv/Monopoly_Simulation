@@ -5,6 +5,9 @@ from ai.human.logic import Logic
 from ai.human.mortgage_logic import MortgageLogic
 from ai.human.tile_logic import TileLogic
 from ai.human.trading_logic import TradingLogic
+from gamecode.control.tile_manager import TileError
+from gamecode.gameplay.trade import TradeError
+from gamecode.tiles.property import OwnedError, MoneyError
 
 
 class HumanLogic(Logic):
@@ -25,8 +28,10 @@ class HumanLogic(Logic):
             self.auction.auction()
         elif self.game.console.trade_loaded():
             self.run("info")
-            self.run("accept")
-            self.run("refuse")
+            try:
+                self.run("accept")
+            except TradeError:
+                self.run("refuse")
         else:
             if self.game.console.turn_mgr.can_roll:
                 self.normal_move()
@@ -37,8 +42,12 @@ class HumanLogic(Logic):
         self.run("me")
         self.run("roll")
         self.run("dice")
-        self.run("buy")
-        self.run("auction")
+        try:
+            self.run("buy")
+        except MoneyError:
+            self.run("auction")
+        except (TileError, OwnedError):
+            pass
         self.trader.trade()
 
     def last_move(self):

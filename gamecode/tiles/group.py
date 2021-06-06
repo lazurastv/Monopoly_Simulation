@@ -12,15 +12,18 @@ class Group:
     def __iter__(self):
         return iter(self.tiles)
 
+    def __len__(self):
+        return len(self.tiles)
+
+    def __getitem__(self, item):
+        return self.tiles[item]
+
     def count(self, player):
         owns = [player.has(x) and not x.mortgaged for x in self]
         return owns.count(True)
 
     def max_ownership(self, players):
         return max([self.count(x) for x in players])
-
-    def total(self):
-        return len(self.tiles)
 
     def owners(self):
         owner_list = set()
@@ -29,8 +32,8 @@ class Group:
                 owner_list.add(tile.owner)
         return owner_list
 
-    def full_set(self, player):
-        return self.count(player) == self.total()
+    def owned_by(self, player):
+        return self.count(player) == len(self)
 
     def filled(self):
         for tile in self:
@@ -39,7 +42,7 @@ class Group:
         return True
 
     def owned(self):
-        return len(self.owners()) == 1
+        return self.filled() and len(self.owners()) == 1
 
     def has_houses(self):
         return self.highest_house() != 0
