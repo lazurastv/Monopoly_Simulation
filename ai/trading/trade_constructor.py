@@ -14,12 +14,12 @@ class TradeConstructor:
     def construct_all_bars(self, graph):
         bars = graph.get_node(self.player)
         graphs = [graph]
-        all_trades = {}
+        all_trades = []
         for bar in bars:
             next_graphs, trades = self.construct_all_graphs(graphs, bar)
             if trades is None:
                 return
-            all_trades[bar] = trades
+            all_trades.append((bar, trades))
             graphs = next_graphs
         return all_trades
 

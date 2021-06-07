@@ -25,6 +25,14 @@ class Board:
     def __iter__(self):
         return iter(self.tiles)
 
+    def copy(self, game):
+        board_copy = Board(game)
+        board_copy.tiles = []
+        for tile in self.tiles:
+            board_copy.tiles.append(tile.copy(game))
+        load_groups(board_copy)
+        return board_copy
+
     def load_tiles(self, game):
         self.load(Tile, "Empty")
         self.load(Tax, "Tax")

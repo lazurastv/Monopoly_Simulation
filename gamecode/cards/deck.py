@@ -1,3 +1,4 @@
+from copy import deepcopy
 from random import randint
 
 from gamecode.cards.specific.get_out import GetOut

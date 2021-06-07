@@ -5,9 +5,7 @@ from ai.human.logic import Logic
 from ai.human.mortgage_logic import MortgageLogic
 from ai.human.tile_logic import TileLogic
 from ai.human.trading_logic import TradingLogic
-from gamecode.control.auction import AuctionError
 from gamecode.control.tile_manager import NotPropertyError
-from gamecode.control.turn_manager import NoThrowsLeftError, TileNotOwnedError
 from gamecode.gameplay.trade import TradeError
 from gamecode.tiles.property import OwnedError, MoneyError
 
@@ -22,28 +20,41 @@ class HumanLogic(Logic):
         self.tile_logic = TileLogic(self)
         self.risk_factor = random()
 
+    def copy(self, game):
+        logic_copy = HumanLogic(game, self.player.id)
+        logic_copy.risk_factor = self.risk_factor
+        return logic_copy
+
     def run(self, text):
         self.game.console.run(text)
 
+    def auction_running(self):
+        return self.game.console.auction_running()
+
+    def trade_loaded(self):
+        return self.game.console.trade_loaded()
+
+    def can_roll(self):
+        return self.game.console.turn_mgr.can_roll
+
+    def current_tile_owned(self):
+        return self.game.console.current_tile_owned()
+
     def play(self):
-        try:
-            self.normal_move()
-        except AuctionError:
+        if self.auction_running():
             self.auction.auction()
-        except TradeError:
+        elif self.trade_loaded():
             self.handle_trade()
-        except NoThrowsLeftError:
+        elif self.can_roll():
+            self.normal_move()
+        else:
             self.last_move()
 
     def normal_move(self):
-        self.run("me")
         self.trader.trade()
-        try:
-            self.run("roll")
-        except TileNotOwnedError:
+        self.run("roll")
+        if not self.current_tile_owned():
             self.handle_tile()
-            self.run("roll")
-        self.run("dice")
 
     def handle_tile(self):
         try:
@@ -55,7 +66,6 @@ class HumanLogic(Logic):
 
     def handle_trade(self):
         try:
-            self.run("info")
             self.run("accept")
         except TradeError:
             self.run("refuse")
@@ -65,8 +75,8 @@ class HumanLogic(Logic):
         self.trader.trade()
         self.mortgage.keep_alive()
         try:
-            self.run("next")
-        except TileNotOwnedError:
-            self.run("me")
-            self.handle_tile()
-            self.run("next")
+            if not self.current_tile_owned():
+                self.handle_tile()
+        except AttributeError:
+            pass
+        self.run("next")

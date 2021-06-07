@@ -27,7 +27,7 @@ class Trading:
 
     def load(self, player, diff, *tiles):
         player_1 = self.game.console.get_current_player()
-        player_2 = self.game.players.get(player)
+        player_2 = self.game.players.get_by_id(player)
         if player_1 == player_2:
             raise TradeError("You cannot trade with yourself!")
         if len(tiles) == 0:

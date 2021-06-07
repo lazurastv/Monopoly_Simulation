@@ -35,9 +35,9 @@ class Communicator:
         if trades is None:
             return None
         commands = []
-        for trade in trades:
-            command = "trade " + str(trade) + " 0"
-            for tiles in trades[trade]:
+        for bar, trade in trades:
+            command = "trade " + str(bar) + " 0"
+            for tiles in trade:
                 if tiles != "<->":
                     for tile in tiles:
                         command += " " + str(tile)

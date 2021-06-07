@@ -15,8 +15,15 @@ class Jail(Tile):
     def __str__(self):
         return super().__str__() + ", jailed: " + str(self.jailed_players)
 
+    def copy(self, game):
+        jail_copy = Jail(self.position)
+        for player in self.jailed_players:
+            player_copy = game.get_player(player.id)
+            jail_copy.jailed_players[player_copy] = self.jailed_players[player]
+        return jail_copy
+
     def starting_from_event(self, player, dice):
-        if player.in_jail:
+        if player in self.jailed_players:
             if self.jailed_players[player] < 3 and not self.rolled_doubles(player, dice):
                 return
             self.remove_from_jail(player)

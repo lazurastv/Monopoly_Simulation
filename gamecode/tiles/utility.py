@@ -6,6 +6,15 @@ class Utility(Property):
         super().__init__(pos, 150, 75)
         self.from_card = False
 
+    def copy(self, game):
+        tile_copy = Utility(self.position)
+        tile_copy.mortgaged = self.mortgaged
+        tile_copy.from_card = self.from_card
+        if self.owner:
+            player = game.get_player(self.owner.id)
+            tile_copy.change_owner(player)
+        return tile_copy
+
     def card_rent(self):
         self.from_card = True
 

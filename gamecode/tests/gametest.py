@@ -1,7 +1,9 @@
-from copy import deepcopy
-
 from gamecode.gameplay.game import Game
 
 game_a = Game()
-game_b = deepcopy(game_a)
-game_a.start()
+winners = [0] * 4
+for i in range(100):
+    game = game_a.copy()
+    game.start()
+    winners[game.winner] += 1
+    print(winners)

@@ -9,5 +9,8 @@ class Tax(Tile):
     def __str__(self):
         return super().__str__() + ", $" + str(self.cost)
 
+    def copy(self, game):
+        return Tax(self.position, self.cost)
+
     def landed_on_event(self, player, dice):
         player.pay(self.cost)

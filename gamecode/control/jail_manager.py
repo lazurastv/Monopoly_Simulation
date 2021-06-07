@@ -2,9 +2,9 @@ from gamecode.tiles.jail import JailError
 
 
 class JailManager:
-    def __init__(self, turn_mgr, jail):
+    def __init__(self, turn_mgr):
         self.turn_mgr = turn_mgr
-        self.jail = jail
+        self.jail = turn_mgr.game.get_tile("Jail")
 
     def put_in_jail(self, player):
         self.jail.put_in_jail(player)

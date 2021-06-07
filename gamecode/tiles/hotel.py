@@ -18,6 +18,15 @@ class Hotel(Property):
             addon = ", rent = " + str(self.rent(None))
         return super().__str__() + addon
 
+    def copy(self, game):
+        hotel_copy = Hotel(self.position, self.price, self.mortgage, self.house_price, self.rents)
+        hotel_copy.mortgaged = self.mortgaged
+        hotel_copy.houses = self.houses
+        if self.owner:
+            player = game.get_player(self.owner.id)
+            hotel_copy.change_owner(player)
+        return hotel_copy
+
     def rent(self, dice=None):
         if self.owner is None:
             return 0

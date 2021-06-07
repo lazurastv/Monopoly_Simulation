@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from gamecode.control.jail_manager import JailManager
 from gamecode.gameplay.dice import Dice
 
@@ -23,12 +25,19 @@ class TurnManager:
         self.dice = Dice()
         self.can_roll = True
         self.current_player_id = 0
-        self.jail_mgr = JailManager(self, self.game.get_tile("Jail"))
+        self.jail_mgr = JailManager(self)
+
+    def copy(self, game):
+        turn_copy = TurnManager(game)
+        turn_copy.dice = deepcopy(self.dice)
+        turn_copy.can_roll = self.can_roll
+        turn_copy.current_player_id = self.current_player_id
+        return turn_copy
 
     def roll(self):
         if not self.can_roll:
             raise NoThrowsLeftError
-        elif not self.current_tile_owned():
+        elif not self.current_tile_owned() and self.dice.repeats > 0:
             raise TileNotOwnedError
         else:
             self.dice.roll()

@@ -14,6 +14,10 @@ class Console:
         self.auction = Auction(game)
         self.trading = Trading(game)
         self.running = False
+        self.parser = None
+        self.setup_parser()
+
+    def setup_parser(self):
         commands = {
             "roll": self.turn_mgr.roll,
             "next": self.turn_mgr.next,
@@ -34,6 +38,12 @@ class Console:
             "dice": self.turn_mgr.info_dice
         }
         self.parser = Parser(commands)
+
+    def copy(self, game):
+        console_copy = Console(game)
+        console_copy.turn_mgr = self.turn_mgr.copy(game)
+        console_copy.setup_parser()
+        return console_copy
 
     def auction_running(self):
         return self.auction.running
@@ -63,7 +73,6 @@ class Console:
         self.running = False
 
     def run(self, text):
-        print(text)
         if self.trade_loaded():
             self.trading.run(text)
         elif self.auction_running():

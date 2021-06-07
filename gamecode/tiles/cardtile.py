@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from gamecode.tiles.tile import Tile
 
 
@@ -10,7 +12,10 @@ class CardTile(Tile):
     def __str__(self):
         return "Card tile"
 
+    def copy(self, game):
+        deck_copy = deepcopy(self.deck)
+        return CardTile(self.position, deck_copy, game)
+
     def landed_on_event(self, player, dice):
         card = self.deck.draw()
-        print(card)
         card.action(self.game, player)

@@ -18,10 +18,11 @@ class Player:
             text += str(tile.position) + ", "
         return text
 
-    def __deepcopy__(self):
-        copy = Player(self.id, self.money, self.position, self.properties, self.jail_card)
-        copy.start = self.start
-        return copy
+    def __deepcopy__(self, memodict={}):
+        player_copy = Player(self.id, self.money, self.position, card=self.jail_card)
+        player_copy.start = self.start
+        player_copy.in_jail = self.in_jail
+        return player_copy
 
     def inject_logic(self, logic):
         self.logic = logic
