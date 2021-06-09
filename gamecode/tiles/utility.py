@@ -21,7 +21,7 @@ class Utility(Property):
     def rent(self, dice=None):
         if self.owner is None:
             return 0
-        val = self.group.count(self.owner)
+        val = self.group.count_owned_and_not_mortgaged(self.owner)
         dice_value = 7
         if dice is not None:
             dice_value = dice.value()

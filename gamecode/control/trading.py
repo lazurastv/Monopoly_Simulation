@@ -38,7 +38,7 @@ class Trading:
         except ValueError:
             print("Wrong arguments!")
         while self.trade_loaded():
-            player_2.play()
+            player_2.trade()
 
     def accept(self):
         try:

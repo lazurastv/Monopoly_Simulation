@@ -1,9 +1,9 @@
 from gamecode.gameplay.game import Game
 
-game_a = Game()
-winners = [0] * 4
-for i in range(100):
-    game = game_a.copy()
+winners = [0] * 10
+while True:
+    game = Game()
     game.start()
-    winners[game.winner] += 1
+    winner_value = game.get_player(0).logic.risk_factor
+    winners[int(winner_value * 10)] += 1
     print(winners)

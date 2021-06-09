@@ -18,12 +18,16 @@ class Group:
     def __getitem__(self, item):
         return self.tiles[item]
 
-    def count(self, player):
+    def count_owned_and_not_mortgaged(self, player):
         owns = [player.has(x) and not x.mortgaged for x in self]
         return owns.count(True)
 
+    def count_owned(self, player):
+        owns = [player.has(x) for x in self]
+        return owns.count(True)
+
     def max_ownership(self, players):
-        return max([self.count(x) for x in players])
+        return max([self.count_owned_and_not_mortgaged(x) for x in players])
 
     def owners(self):
         owner_list = set()
@@ -33,7 +37,10 @@ class Group:
         return owner_list
 
     def owned_by(self, player):
-        return self.count(player) == len(self)
+        return self.count_owned(player) == len(self)
+
+    def owned_and_not_mortgaged(self, player):
+        return self.count_owned_and_not_mortgaged(player) == len(self)
 
     def filled(self):
         for tile in self:
@@ -59,18 +66,17 @@ class Group:
         except AttributeError:
             return [0]
 
-    def total_rent(self):
-        rent_sum = 0
-        for tile in self:
-            rent_sum += tile.rent()
-        return rent_sum
-
-    def rent_derivative(self):
-        cost = self.tiles[0].house_price
+    def pay_all_mortgage_cost(self):
+        cost = 0
         for tile in self:
             if tile.mortgaged:
-                cost += tile.mortgage_pay_cost()
-        return max([x.rent_change() for x in self]) / cost
+                cost += tile.pay_mortgage_cost()
+        return cost
+
+    def derivative(self):
+        dfxs = [x.derivative() for x in self]
+        max_dfx = max(dfxs)
+        return max_dfx, dfxs.index(max_dfx)
 
 
 def load_groups(board):

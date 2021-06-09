@@ -25,6 +25,9 @@ class Board:
     def __iter__(self):
         return iter(self.tiles)
 
+    def __len__(self):
+        return len(self.tiles)
+
     def copy(self, game):
         board_copy = Board(game)
         board_copy.tiles = []

@@ -31,8 +31,8 @@ class Combiner:
         return self.graphs
 
     def complete_all_groups(self, partners, groups, graph, index=0):
-        if len(partners) >= self.max_count:
-            return
+        # if len(partners) >= self.max_count:
+        #    return
         target = partners[index]
         for group in groups:
             graph_copy = deepcopy(graph)

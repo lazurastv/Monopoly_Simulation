@@ -1,7 +1,7 @@
 import unittest
 from random import randint, seed
 
-from ai.human.trading_alg import TradeFinder, clean_groups
+from ai.logic.trading_alg import TradeFinder, clean_groups
 
 
 def random_group(player_count, group_count):

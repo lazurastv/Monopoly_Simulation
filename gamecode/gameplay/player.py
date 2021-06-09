@@ -103,3 +103,9 @@ class Player:
 
     def play(self):
         self.logic.play()
+
+    def auction(self):
+        self.logic.auction()
+
+    def trade(self):
+        self.logic.trade()

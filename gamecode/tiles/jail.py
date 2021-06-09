@@ -15,6 +15,9 @@ class Jail(Tile):
     def __str__(self):
         return super().__str__() + ", jailed: " + str(self.jailed_players)
 
+    def __contains__(self, item):
+        return item in self.jailed_players
+
     def copy(self, game):
         jail_copy = Jail(self.position)
         for player in self.jailed_players:
@@ -33,6 +36,9 @@ class Jail(Tile):
         player.in_jail = True
         player.move_to(self.position)
         self.jailed_players[player] = 0
+
+    def turns_left(self, player):
+        return 3 - self.jailed_players[player]
 
     def remove_from_jail(self, player):
         player.in_jail = False

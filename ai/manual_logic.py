@@ -1,4 +1,4 @@
-from ai.human.logic import Logic
+from ai.logic.logic import Logic
 
 
 class ManualLogic(Logic):

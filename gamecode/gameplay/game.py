@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from ai.human.human_logic import HumanLogic
+from ai.logic.human_logic import HumanLogic
 from gamecode.control.console import Console
 from gamecode.gameplay.players import Players
 from gamecode.gameplay.board import Board

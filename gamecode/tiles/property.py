@@ -39,6 +39,9 @@ class Property(Tile):
     def owned(self):
         return self.owner is not None
 
+    def owned_by(self, player):
+        return self.owner == player
+
     def change_owner(self, player):
         if self.owned():
             self.owner.remove_property(self)
@@ -65,11 +68,11 @@ class Property(Tile):
             self.owner.earn(self.mortgage)
             self.mortgaged = True
 
-    def mortgage_pay_cost(self):
+    def pay_mortgage_cost(self):
         return int(self.mortgage * 1.1)
 
     def pay_mortgage(self, player):
-        amount = self.mortgage_pay_cost()
+        amount = self.pay_mortgage_cost()
         if player != self.owner:
             raise MortgageError("You are not the owner!")
         elif not self.mortgaged:

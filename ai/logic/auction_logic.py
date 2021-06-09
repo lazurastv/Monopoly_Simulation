@@ -1,4 +1,4 @@
-from ai.human.sub_logic import SubLogic
+from ai.logic.sub_logic import SubLogic
 from gamecode.tiles.hotel import Hotel
 from gamecode.tiles.utility import Utility
 
@@ -20,7 +20,7 @@ class AuctionLogic(SubLogic):
     def max_auction_value_for_hotel(self):
         group = self.target.group
         max_owned = group.max_ownership(self.logic.game.players)
-        mine = group.count(self.logic.player)
+        mine = group.count_owned(self.logic.player)
         total = len(group)
         ratio = (mine, total)
         worst = (max_owned, total)
@@ -35,7 +35,7 @@ class AuctionLogic(SubLogic):
 
     def max_auction_value_for_utility(self):
         group = self.target.group
-        mine = group.count(self.logic.player)
+        mine = group.count_owned(self.logic.player)
         if mine == 0:
             return self.target.price / 2
         else:
@@ -44,7 +44,7 @@ class AuctionLogic(SubLogic):
     def max_auction_value_for_railroad(self):
         group = self.target.group
         max_owned = group.max_ownership(self.logic.game.players)
-        mine = group.count(self.logic.player)
+        mine = group.count_owned(self.logic.player)
         if mine == 3:
             return self.target.price * 4
         elif max_owned == 3:

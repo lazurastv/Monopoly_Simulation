@@ -30,7 +30,7 @@ class Auction:
             self.current_player_id = self.game.console.turn_mgr.current_player_id
             self.running = True
             while self.running:
-                self.get_current_player().play()
+                self.get_current_player().auction()
 
     def run(self, text):
         try:

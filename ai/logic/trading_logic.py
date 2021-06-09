@@ -1,4 +1,4 @@
-from ai.human.sub_logic import SubLogic
+from ai.logic.sub_logic import SubLogic
 from ai.trading.communicator import Communicator
 
 

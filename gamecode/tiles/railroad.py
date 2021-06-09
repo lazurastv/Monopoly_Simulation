@@ -22,7 +22,7 @@ class Train(Property):
     def rent(self, dice=None):
         if self.owner is None:
             return 0
-        val = self.group.count(self.owner)
+        val = self.group.count_owned_and_not_mortgaged(self.owner)
         if self.from_card:
             self.from_card = False
             return self.amount[val] * 2
