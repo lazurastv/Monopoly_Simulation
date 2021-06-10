@@ -27,7 +27,7 @@ class Auction:
         else:
             self.value = 0
             self.players = copy(self.game.players.players)
-            self.current_player_id = self.game.console.turn_mgr.current_player_id
+            self.current_player_id = self.game.console.turn_mgr.current_player_index
             self.running = True
             while self.running:
                 self.get_current_player().auction()

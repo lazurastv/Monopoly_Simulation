@@ -1,3 +1,5 @@
+from random import random
+
 from ai.logic.sub_logic import SubLogic
 from gamecode.tiles.hotel import Hotel, HouseError
 from gamecode.tiles.property import MortgageError
@@ -40,7 +42,9 @@ class TileLogic(SubLogic):
     def manage_tiles(self):
         properties = self.get_properties().copy()
         try:
-            self.build_hotels(properties)
-            self.repay_mortgages(properties)
+            if self.get_player().has(int((1 - self.logic.risk_factor) * 1000)):
+                self.build_hotels(properties)
+            else:
+                self.repay_mortgages(properties)
         except (MortgageError, HouseError):
             return

@@ -32,7 +32,11 @@ class Board:
         board_copy = Board(game)
         board_copy.tiles = []
         for tile in self.tiles:
-            board_copy.tiles.append(tile.copy(game))
+            if not isinstance(tile, GoToJail):
+                board_copy.tiles.append(tile.copy(game))
+            else:
+                jail = board_copy.get("Jail")
+                board_copy.tiles.append(tile.copy(jail))
         load_groups(board_copy)
         return board_copy
 
@@ -100,3 +104,7 @@ class Board:
             if 0 < diff < target:
                 target = ind
         return target
+
+    def change_owners(self, owner_tile_list):
+        for owner, tile in owner_tile_list:
+            self.tiles[tile].change_owner(owner)

@@ -12,7 +12,7 @@ class Train(Property):
         tile_copy.mortgaged = self.mortgaged
         tile_copy.from_card = self.from_card
         if self.owner:
-            player = game.get_player(self.owner.id)
+            player = game.get_player_by_id(self.owner.id)
             tile_copy.change_owner(player)
         return tile_copy
 

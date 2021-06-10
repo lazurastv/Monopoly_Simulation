@@ -11,10 +11,10 @@ from gamecode.tiles.jail import Jail
 from gamecode.tiles.property import OwnedError, MoneyError
 
 
-class HumanLogic(Logic):
+class MainLogic(Logic):
     def __init__(self, game, index):
         super().__init__(game)
-        self.player = game.get_player(index)
+        self.player = game.get_player_by_id(index)
         self.mortgage = MortgageLogic(self)
         self.auction_logic = AuctionLogic(self)
         self.trader = TradingLogic(self)
@@ -22,7 +22,7 @@ class HumanLogic(Logic):
         self.risk_factor = random()
 
     def copy(self, game):
-        logic_copy = HumanLogic(game, self.player.id)
+        logic_copy = MainLogic(game, self.player.id)
         logic_copy.risk_factor = self.risk_factor
         return logic_copy
 
@@ -73,7 +73,7 @@ class HumanLogic(Logic):
         jail = board.get("Jail")
         turns_left = jail.turns_left(self.player)
         potential_money = turns_left / landings_per_round * rent * self.game.get_player_count()
-        return self.risk_factor > 1 - percent_free or potential_money > Jail.fee
+        return self.risk_factor + percent_free > 1 or potential_money > Jail.FEE
 
     def normal_move(self):
         self.trader.trade()
@@ -86,7 +86,7 @@ class HumanLogic(Logic):
         self.run("roll")
 
     def player_has_jail_fee(self):
-        return self.player.has(Jail.fee)
+        return self.player.has(Jail.FEE)
 
     def handle_tile(self):
         try:

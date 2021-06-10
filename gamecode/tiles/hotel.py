@@ -23,7 +23,7 @@ class Hotel(Property):
         hotel_copy.mortgaged = self.mortgaged
         hotel_copy.houses = self.houses
         if self.owner:
-            player = game.get_player(self.owner.id)
+            player = game.get_player_by_id(self.owner.id)
             hotel_copy.change_owner(player)
         return hotel_copy
 
@@ -74,7 +74,7 @@ class Hotel(Property):
             self.houses += 1
             self.owner.pay(self.house_price)
         else:
-            raise HouseError
+            raise HouseError("You can't buy a house!")
 
     def can_sell_house(self, player):
         return player == self.owner and self.houses > 0 and self.even(True)
@@ -93,4 +93,4 @@ class Hotel(Property):
             self.houses -= 1
             self.owner.earn(self.sell_house_value())
         else:
-            raise HouseError
+            raise HouseError("You can't sell a house!")

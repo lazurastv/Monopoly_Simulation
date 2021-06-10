@@ -3,7 +3,7 @@ class Information:
         self.game = game
 
     def get_player(self, player):
-        return self.game.get_player(player)
+        return self.game.get_player_by_id(player)
 
     def get_player_count(self):
         return self.game.get_player_count()

@@ -14,8 +14,7 @@ def has_next(index, partners):
 
 
 class Combiner:
-    def __init__(self, groups, player_count):
-        self.max_count = player_count
+    def __init__(self, groups):
         self.groups = groups
         self.graphs = []
 
@@ -31,8 +30,6 @@ class Combiner:
         return self.graphs
 
     def complete_all_groups(self, partners, groups, graph, index=0):
-        # if len(partners) >= self.max_count:
-        #    return
         target = partners[index]
         for group in groups:
             graph_copy = deepcopy(graph)
@@ -43,4 +40,9 @@ class Combiner:
                 groups_copy.remove(group)
                 self.complete_all_groups(partners_copy, groups_copy, graph_copy, index + 1)
             else:
-                self.graphs.append(graph_copy)
+                redundant_graph = False
+                for good_graph in self.graphs:
+                    if good_graph.equivalent(graph_copy):
+                        redundant_graph = True
+                if not redundant_graph:
+                    self.graphs.append(graph_copy)

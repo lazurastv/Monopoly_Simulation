@@ -39,6 +39,12 @@ class Players:
             if player.id == index:
                 return player
 
+    def fill_unrolled_graph(self, unrolled_graph):
+        filled_graph = []
+        for owner, tile in unrolled_graph:
+            filled_graph.append((self.get_by_id(owner), tile))
+        return filled_graph
+
     def count(self):
         return len(self.players)
 

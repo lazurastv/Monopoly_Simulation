@@ -2,14 +2,16 @@ from ai.trading.combiner import Combiner
 from ai.trading.trade_constructor import TradeConstructor
 
 
-def solve_for(target, groups, player_count):
-    combiner = Combiner(groups, player_count)
+def solve_for(target, groups, money_calc):
+    combiner = Combiner(groups)
     combiner.combine_with(target)
+    money_calc.calculate_prices(combiner.graphs)
     trade_const = TradeConstructor(target)
-    for graph in combiner:
+    for i, graph in enumerate(combiner):
         trade = trade_const.construct_all_bars(graph)
-        if trade is not None:
-            return trade
+        if trade is not None and money_calc.verify_trades(i, trade):
+            return trade, money_calc.get(i)
+    return None, None
 
 
 def encode_group(text):
@@ -23,9 +25,3 @@ def encode_group(text):
             i += 1
         encoded_group.append(group_list)
     return encoded_group
-
-
-if __name__ == "__main__":
-    example = encode_group("002 112 012 010")
-    trades = solve_for(1, example, 4)
-    print(trades)

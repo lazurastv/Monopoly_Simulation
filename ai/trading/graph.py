@@ -17,6 +17,9 @@ class Graph:
     def __contains__(self, item):
         return item in self.nodes
 
+    def __iter__(self):
+        return iter(self.nodes)
+
     def add_pointer(self, node_index, pointer_index, pointer_value):
         if node_index not in self:
             self.nodes[node_index] = Node(node_index)
@@ -28,9 +31,14 @@ class Graph:
     def pop(self, node_index, pointer_index):
         try:
             self.nodes[node_index].pop(pointer_index)
+            return
         except KeyError:
+            pass
+        try:
             if self.nodes[node_index].pointer_count() == 0:
                 self.nodes.pop(node_index)
+        except KeyError:
+            return
 
     def go_to_node(self, node):
         node = self.nodes[node]
@@ -44,8 +52,24 @@ class Graph:
         return self.nodes[node_index].get_pointer(pointer_index)
 
     def reset(self):
-        for node in self.nodes:
+        for node in self:
             self.nodes[node].visited = False
 
     def visited(self, node):
         return self.nodes[node].visited
+
+    def equivalent(self, graph):
+        for player in graph:
+            if player not in self:
+                return False
+        return True
+
+    def unroll(self):
+        tile_list = []
+        for node_index in self:
+            node = self.get_node(node_index)
+            for bar in node:
+                tiles = node.get_pointer(bar)
+                for tile in tiles:
+                    tile_list.append((bar, tile))
+        return tile_list

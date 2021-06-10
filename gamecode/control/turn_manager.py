@@ -24,14 +24,14 @@ class TurnManager:
         self.game = game
         self.dice = Dice()
         self.can_roll = True
-        self.current_player_id = 0
+        self.current_player_index = 0
         self.jail_mgr = JailManager(self)
 
     def copy(self, game):
         turn_copy = TurnManager(game)
         turn_copy.dice = deepcopy(self.dice)
         turn_copy.can_roll = self.can_roll
-        turn_copy.current_player_id = self.current_player_id
+        turn_copy.current_player_index = self.current_player_index
         return turn_copy
 
     def roll(self):
@@ -57,8 +57,8 @@ class TurnManager:
         else:
             if not self.get_current_player().positive_balance():
                 self.game.players.kill(self.get_current_player())
-            self.current_player_id += 1
-            self.current_player_id %= self.game.get_player_count()
+            self.current_player_index += 1
+            self.current_player_index %= self.game.get_player_count()
             if self.game.get_player_count() == 1:
                 self.game.end(self.get_current_player())
                 return
@@ -81,7 +81,7 @@ class TurnManager:
         return self.game.get_tile(self.get_current_player().position)
 
     def get_current_player(self):
-        return self.game.get_player(self.current_player_id)
+        return self.game.get_player(self.current_player_index)
 
     def info_dice(self):
         print(self.dice)

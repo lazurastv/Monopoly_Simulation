@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from ai.logic.human_logic import HumanLogic
+from ai.logic.main_logic import MainLogic
 from gamecode.control.console import Console
 from gamecode.gameplay.players import Players
 from gamecode.gameplay.board import Board
@@ -11,7 +11,7 @@ class Game:
         self.board = Board(self)
         self.console = Console(self)
         self.players = Players(start_money, player_count)
-        logic = [HumanLogic(self, 0), HumanLogic(self, 1), HumanLogic(self, 2), HumanLogic(self, 3)]
+        logic = [MainLogic(self, 0), MainLogic(self, 1), MainLogic(self, 2), MainLogic(self, 3)]
         self.players.inject_logic(logic)
         self.winner = None
 
@@ -35,6 +35,9 @@ class Game:
                 continue
         return groups
 
+    def get_player_by_id(self, index):
+        return self.players.get_by_id(index)
+
     def get_player(self, index):
         return self.players.get(index)
 
@@ -51,5 +54,5 @@ class Game:
         self.console.start()
 
     def end(self, player):
-        self.winner = player.id
+        self.winner = player
         self.console.end()

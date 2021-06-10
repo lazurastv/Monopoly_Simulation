@@ -23,20 +23,21 @@ def clean_groups(groups):
 
 
 class Communicator:
-    def __init__(self, target, game):
+    def __init__(self, target, game, money_calc):
         self.target = target
         self.game = game
+        self.money_calc = money_calc
         self.groups = game.get_groups(True)
 
     def get_trade(self):
         clean_groups(self.groups)
         int_groups = get_groups(self.groups)
-        trades = solve_for(self.target, int_groups, self.game.get_player_count())
+        trades, prices = solve_for(self.target, int_groups, self.money_calc)
         if trades is None:
             return None
         commands = []
         for bar, trade in trades:
-            command = "trade " + str(bar) + " 0"
+            command = "trade " + str(bar) + " " + str(prices[self.target][bar])
             for tiles in trade:
                 if tiles != "<->":
                     for tile in tiles:

@@ -3,4 +3,7 @@ from ai.logic.logic import Logic
 
 class ManualLogic(Logic):
     def play(self):
-        self.game.console.run(input())
+        try:
+            self.game.console.run(input())
+        except Exception as e:
+            print(e)
