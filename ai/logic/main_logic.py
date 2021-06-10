@@ -9,6 +9,7 @@ from gamecode.control.tile_manager import NotPropertyError
 from gamecode.gameplay.trade import TradeError
 from gamecode.tiles.jail import Jail
 from gamecode.tiles.property import OwnedError, MoneyError
+from gamecode.tiles.tax import Tax
 
 
 class MainLogic(Logic):
@@ -56,23 +57,25 @@ class MainLogic(Logic):
     def worth_leaving_jail(self):
         amount = 0
         total = 0
-        rent = 0
+        gains = 0
+        losses = 0
         board = self.game.board
         for tile in board:
             try:
                 if not tile.owned():
                     amount += 1
                 elif tile.owned_by(self.player):
-                    rent += tile.rent()
+                    gains += tile.rent()
+                else:
+                    losses += tile.rent()
                 total += 1
             except AttributeError:
-                continue
+                if isinstance(tile, Tax):
+                    losses += tile.cost
         percent_free = amount / total
-        rent /= len(board)
-        landings_per_round = len(board) / 7
         jail = board.get("Jail")
         turns_left = jail.turns_left(self.player)
-        potential_money = turns_left / landings_per_round * rent * self.game.get_player_count()
+        potential_money = 7 * turns_left * (self.game.get_player_count() * gains - losses) / 1600
         return self.risk_factor + percent_free > 1 or potential_money > Jail.FEE
 
     def normal_move(self):
