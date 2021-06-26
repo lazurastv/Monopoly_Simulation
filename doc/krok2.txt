@@ -1,0 +1,21 @@
+Otrzymaliśmy rozwiązanie 000 222 333 444, a na początku mieliśmy 002 324 304 403. W słowniku możemy przechowywać węzły oraz na jakie węzły wskazują.
+Dodaj węzły 0, 2, 3, 4
+Dodaj krawędzie dla 0: pierwsza grupa ma poza 0 też 2, więc 0 -> 2
+Dodaj krawędzie dla 2: druga grupa ma poza 2 też 3 i 4, więc 2 -> 3 i 2 -> 4
+Dodaj krawędzie dla 3: trzecia grupa ma poza 3 też 0 i 4, więc 3 -> 0 i 3 -> 4
+Dodaj krawędzie dla 4: trzecia grupa ma poza 4 też 0 i 3, więc 4 -> 0 i 4 -> 3
+Mamy więc graf:
+0: 2
+2: 3, 4
+3: 0, 4
+4: 0, 3
+
+002 112 012 010
+
+000 111 222
+
+112 212
+
+1 1
+1 2
+2 1

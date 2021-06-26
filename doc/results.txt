@@ -1,0 +1,15 @@
+999 [76, 88, 101, 94, 88, 92, 101, 116, 123, 121]
+Risk factor < 0.0 , 0.1 > won 7.6 % of games
+Risk factor < 0.1 , 0.2 > won 8.799999999999999 % of games
+Risk factor < 0.2 , 0.30000000000000004 > won 10.100000000000001 % of games
+Risk factor < 0.30000000000000004 , 0.4 > won 9.4 % of games
+Risk factor < 0.4 , 0.5 > won 8.799999999999999 % of games
+Risk factor < 0.5 , 0.6 > won 9.2 % of games
+Risk factor < 0.6000000000000001 , 0.7000000000000001 > won 10.100000000000001 % of games
+Risk factor < 0.7000000000000001 , 0.8 > won 11.600000000000001 % of games
+Risk factor < 0.8 , 0.9 > won 12.3 % of games
+Risk factor < 0.9 , 1.0 > won 12.1 % of games
+
+99 29 90
+Probability to win without extra tiles: 28.999999999999996 %
+Probability to win with extra tiles: 90.0 %

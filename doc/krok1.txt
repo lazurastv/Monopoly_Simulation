@@ -1,0 +1,10 @@
+Znajdź dla: 0, 002 112 324 304 403
+Zakładamy, że pierwsza grupa będzie należeć do gracza 0. Wtedy musimy znaleźć też grupę dla gracza 2
+Znajdź dla: 2, 112, 324 304 403
+Zakładamy, że druga grupa będzie należeć do gracza 2. Wtedy musimy znaleźć też grupę dla graczy 3 i 4
+Znajdź dla: 3, 112, 304, 403
+Zakładamy, że druga grupa będzie należeć do gracza 3. Wtedy musimy znaleźć też grupę dla gracza 0 i 4, ale już znaleźliśmy dla nich grupy, więc możemy ich pominąć.
+Znajdź dla: 4, 112, 403
+Zakładamy, że druga grupa będzie należeć do gracza 4. Wtedy musimy znaleźć też grupę dla gracza 0 i 3, ale już znaleźliśmy dla nich grupy, więc możemy ich pominąć.
+Ostateczne rozwiązanie:
+000 222 333 444
